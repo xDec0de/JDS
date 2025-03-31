@@ -1,2 +1,1 @@
-rootProject.name = "SkyBot"
-
+rootProject.name = "MCSkyBot"

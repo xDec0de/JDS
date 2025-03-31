@@ -1,19 +1,20 @@
-plugins {
-    id("java")
-}
 
 group = "net.codersky"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
+
+plugins {
+	`java-library`
+	id("com.gradleup.shadow") version "8.3.5"
+}
 
 repositories {
-    mavenCentral()
+	maven("https://repo.codersky.net/releases/")
+	mavenCentral()
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-tasks.test {
-    useJUnitPlatform()
+	compileOnly("org.jetbrains:annotations:26.0.2")
+	implementation("net.codersky.jsky:base:1.0.0")
+	implementation("net.codersky.jsky:yaml:1.0.0")
+	implementation("org.yaml:snakeyaml:2.3")
 }
