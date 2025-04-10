@@ -5,7 +5,6 @@ import net.codersky.jsky.yaml.YamlFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.function.Predicate;
 
 public abstract class MCSkyBot {
 
@@ -18,10 +17,9 @@ public abstract class MCSkyBot {
 		this.cfg = new YamlFile(dataFolder, "config.yml");
 	}
 
-	@NotNull
-	public YamlFile getConfig() {
-		return cfg;
-	}
+	/*
+	 - Bot start
+	 */
 
 	protected abstract void onStart();
 
@@ -52,5 +50,24 @@ public abstract class MCSkyBot {
 
 	private void afterStop() {
 		ExitCode.OK.exit();
+	}
+
+	/*
+	 - Utility getters
+	 */
+
+	@NotNull
+	public CLICommandManager getCLICommandManager() {
+		return cliCommandManager;
+	}
+
+	@NotNull
+	public File getDataFolder() {
+		return dataFolder;
+	}
+
+	@NotNull
+	public YamlFile getConfig() {
+		return cfg;
 	}
 }
