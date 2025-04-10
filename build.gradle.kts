@@ -8,13 +8,15 @@ plugins {
 }
 
 repositories {
-	maven("https://repo.codersky.net/releases/")
+	maven("https://repo.codersky.net/snapshots/")
 	mavenCentral()
 }
 
 dependencies {
 	compileOnly("org.jetbrains:annotations:26.0.2")
-	implementation("net.codersky.jsky:base:1.0.0")
-	implementation("net.codersky.jsky:yaml:1.0.0")
-	implementation("org.yaml:snakeyaml:2.3")
+	implementation("net.codersky.jsky:base:1.0.0-SNAPSHOT")
+	implementation("net.codersky.jsky:yaml:1.0.0-SNAPSHOT")
+	implementation("net.dv8tion:JDA:5.3.2") {
+		exclude(module="opus-java")
+	}
 }
