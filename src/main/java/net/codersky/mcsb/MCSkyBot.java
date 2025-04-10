@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public abstract class MCSkyBot {
 
@@ -26,11 +27,15 @@ public abstract class MCSkyBot {
 
 	protected abstract void onStart();
 
-	public final void start() {
+	public final StartCode start() {
+		StartCode code;
 		setupCLI();
-		setupConfig();
-		setupJDA();
+		if (!(code = setupConfig()).isOk())
+			return code;
+		if (!(code = setupJDA()).isOk())
+			return code;
 		onStart();
+		return code;
 	}
 
 	private void setupCLI() {
@@ -42,25 +47,25 @@ public abstract class MCSkyBot {
 		});
 	}
 
-	private void setupConfig() {
-		cfg.setup(err -> {
+	private StartCode setupConfig() {
+		return cfg.setup(err -> {
 			System.err.println("Failed to setup config file - " + err.getMessage() + ":");
 			err.printStackTrace(System.err);
-			ExitCode.CONFIG_SETUP_FAIL.exit();
-		});
+		}) ? StartCode.OK : StartCode.CONFIG_SETUP_FAIL;
 	}
 
-	private void setupJDA() {
+	private StartCode setupJDA() {
 		final String token = getConfig().getString("token", "");
 		if (token.isEmpty())
-			ExitCode.NO_BOT_TOKEN.exit();
+			return StartCode.NO_BOT_TOKEN;
 		jda = JDABuilder.createDefault(token).build();
 		try {
 			jda.awaitReady();
 		} catch (InterruptedException e) {
 			System.err.println("Failed JDA#awaitReady, reason: " + e.getMessage());
-			ExitCode.JDA_SETUP_FAIL.exit();
+			return StartCode.JDA_SETUP_FAIL;
 		}
+		return StartCode.OK;
 	}
 
 	/*
@@ -70,7 +75,7 @@ public abstract class MCSkyBot {
 	protected abstract void onStop(@NotNull String @NotNull [] args);
 
 	private void afterStop() {
-		ExitCode.OK.exit();
+		
 	}
 
 	/*
