@@ -1,6 +1,6 @@
 package net.codersky.mcsb;
 
-public enum StartCode {
+public enum BotStartResult {
 
 	/** Bot started successfully. */
 	OK,

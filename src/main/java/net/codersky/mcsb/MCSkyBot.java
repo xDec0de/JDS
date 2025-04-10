@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.function.Supplier;
 
 public abstract class MCSkyBot {
 
@@ -27,45 +26,45 @@ public abstract class MCSkyBot {
 
 	protected abstract void onStart();
 
-	public final StartCode start() {
-		StartCode code;
+	public final BotStartResult start() {
+		BotStartResult res;
 		setupCLI();
-		if (!(code = setupConfig()).isOk())
-			return code;
-		if (!(code = setupJDA()).isOk())
-			return code;
+		if (!(res = setupConfig()).isOk())
+			return res;
+		if (!(res = setupJDA()).isOk())
+			return res;
 		onStart();
-		return code;
+		return res;
 	}
 
 	private void setupCLI() {
-		cliCommandManager.start();
 		cliCommandManager.registerConsumer("stop", args -> {
 			cliCommandManager.stop();
 			onStop(args);
 			afterStop();
 		});
+		cliCommandManager.start();
 	}
 
-	private StartCode setupConfig() {
+	private BotStartResult setupConfig() {
 		return cfg.setup(err -> {
 			System.err.println("Failed to setup config file - " + err.getMessage() + ":");
 			err.printStackTrace(System.err);
-		}) ? StartCode.OK : StartCode.CONFIG_SETUP_FAIL;
+		}) ? BotStartResult.OK : BotStartResult.CONFIG_SETUP_FAIL;
 	}
 
-	private StartCode setupJDA() {
+	private BotStartResult setupJDA() {
 		final String token = getConfig().getString("token", "");
 		if (token.isEmpty())
-			return StartCode.NO_BOT_TOKEN;
+			return BotStartResult.NO_BOT_TOKEN;
 		jda = JDABuilder.createDefault(token).build();
 		try {
 			jda.awaitReady();
 		} catch (InterruptedException e) {
 			System.err.println("Failed JDA#awaitReady, reason: " + e.getMessage());
-			return StartCode.JDA_SETUP_FAIL;
+			return BotStartResult.JDA_SETUP_FAIL;
 		}
-		return StartCode.OK;
+		return BotStartResult.OK;
 	}
 
 	/*
@@ -75,7 +74,7 @@ public abstract class MCSkyBot {
 	protected abstract void onStop(@NotNull String @NotNull [] args);
 
 	private void afterStop() {
-		
+
 	}
 
 	/*
@@ -95,5 +94,10 @@ public abstract class MCSkyBot {
 	@NotNull
 	public YamlFile getConfig() {
 		return cfg;
+	}
+
+	@NotNull
+	public JDA getJDA() {
+		return jda;
 	}
 }
