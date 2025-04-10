@@ -13,7 +13,11 @@ public enum ExitCode {
 	/** Program executed successfully. */
 	OK,
 	/** Critical error: config.yml failed to set up. */
-	CONFIG_SETUP_FAIL;
+	CONFIG_SETUP_FAIL,
+	/** Critical error: No bot token on config.yml. */
+	NO_BOT_TOKEN,
+	/** Critical error: JDA failed to start. */
+	JDA_SETUP_FAIL;
 
 	/**
 	 * Exits the JVM with this {@link ExitCode} by calling
