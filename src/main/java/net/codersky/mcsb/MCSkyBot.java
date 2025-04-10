@@ -97,6 +97,9 @@ public abstract class MCSkyBot {
 	}
 
 	@NotNull
+	public abstract MSBMessagesFile getMessages();
+
+	@NotNull
 	public JDA getJDA() {
 		return jda;
 	}

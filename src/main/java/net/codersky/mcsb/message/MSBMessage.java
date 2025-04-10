@@ -14,13 +14,13 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
-public class SkyDiscordMessage {
+public class MSBMessage {
 
 	private final String raw;
 	private final MessageEmbed embed;
 	private final boolean ephemeral;
 
-	public SkyDiscordMessage(JDA jda, @NotNull String raw) {
+	public MSBMessage(JDA jda, @NotNull String raw) {
 		this.ephemeral = raw.startsWith("eph:");
 		this.raw = this.ephemeral ? raw.substring(4) : raw;
 		if (this.raw.startsWith("msg:"))
