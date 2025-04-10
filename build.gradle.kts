@@ -19,4 +19,15 @@ dependencies {
 	implementation("net.dv8tion:JDA:5.3.2") {
 		exclude(module="opus-java")
 	}
+
+	testImplementation(platform("org.junit:junit-bom:5.10.0"))
+	testImplementation("org.junit.jupiter:junit-jupiter")
+	testCompileOnly("org.jetbrains:annotations:26.0.2")
+}
+
+tasks.test {
+	useJUnitPlatform()
+	testLogging {
+		events("passed", "skipped", "failed")
+	}
 }
