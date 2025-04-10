@@ -2,11 +2,14 @@ package net.codersky.mcsb;
 
 import net.codersky.jsky.cli.CLICommandManager;
 import net.codersky.jsky.yaml.YamlFile;
+import net.codersky.mcsb.message.MSBMessage;
+import net.codersky.mcsb.message.MSBMessagesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.Objects;
 
 public abstract class MCSkyBot {
 
@@ -40,7 +43,7 @@ public abstract class MCSkyBot {
 	private void setupCLI() {
 		cliCommandManager.registerConsumer("stop", args -> {
 			cliCommandManager.stop();
-			onStop(args);
+			stop(args);
 			afterStop();
 		});
 		cliCommandManager.start();
@@ -71,10 +74,30 @@ public abstract class MCSkyBot {
 	 - Bot stop
 	 */
 
-	protected abstract void onStop(@NotNull String @NotNull [] args);
+	/**
+	 * Stops this {@link MCSkyBot}. This is usually done by the built-in
+	 * stop CLI command, but you can also stop the bot manually with this
+	 * method.
+	 *
+	 * @param args The arguments used when stopping the bot. This array
+	 * must not be {@code null} nor contain {@code null} elements. The
+	 * array can be empty. This just emulates arguments being passed to
+	 * the built-in stop CLI command.
+	 *
+	 * @since MCSkyBot 1.0.0
+	 */
+	public void stop(final @NotNull String @NotNull [] args) {
+		Objects.requireNonNull(args, "Stop args array cannot be null.");
+		for (final String arg : args)
+			Objects.requireNonNull(arg, "Stop args array cannot contain null elements.");
+		onStop(args);
+		afterStop();
+	}
+
+	protected abstract void onStop(final @NotNull String @NotNull [] args);
 
 	private void afterStop() {
-
+		jda.shutdownNow();
 	}
 
 	/*
