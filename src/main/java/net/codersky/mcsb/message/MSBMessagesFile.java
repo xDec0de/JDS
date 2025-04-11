@@ -4,6 +4,7 @@ import net.codersky.jsky.strings.Replacer;
 import net.codersky.jsky.yaml.YamlFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -71,18 +72,18 @@ public class MSBMessagesFile extends YamlFile {
 	}
 
 	/*
-	 - Reply - With member context
+	 - Reply - With user context
 	 */
 
-	public boolean reply(@NotNull Member member, @NotNull IReplyCallback toReply, @NotNull String path) {
+	public boolean reply(@NotNull User user, @NotNull IReplyCallback toReply, @NotNull String path) {
 		return reply(toReply, path);
 	}
 
-	public boolean reply(@NotNull Member member, @NotNull IReplyCallback toReply, @NotNull String path, @NotNull Replacer replacer) {
+	public boolean reply(@NotNull User user, @NotNull IReplyCallback toReply, @NotNull String path, @NotNull Replacer replacer) {
 		return reply(toReply, path, replacer);
 	}
 
-	public boolean reply(@NotNull Member member, @NotNull IReplyCallback toReply, @NotNull String path, @NotNull Object... replacements) {
+	public boolean reply(@NotNull User user, @NotNull IReplyCallback toReply, @NotNull String path, @NotNull Object... replacements) {
 		return reply(toReply, path, replacements);
 	}
 }
