@@ -1,9 +1,9 @@
-import net.codersky.mcsb.MCSkyBot;
+import net.codersky.mcsb.JDSkyBot;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class TestBot extends MCSkyBot {
+public class TestBot extends JDSkyBot {
 
 	public TestBot(File dataFolder) {
 		super(dataFolder);

@@ -1,8 +1,8 @@
 package net.codersky.mcsb.cmd;
 
 import net.codersky.jsky.strings.Replacer;
-import net.codersky.mcsb.MCSkyBot;
-import net.codersky.mcsb.message.MSBMessage;
+import net.codersky.mcsb.JDSkyBot;
+import net.codersky.mcsb.message.JDSMessage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;
@@ -17,12 +17,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class MSBCommandInteraction<B extends MCSkyBot> {
+public class JDSCommandInteraction<B extends JDSkyBot> {
 
 	private final B bot;
 	private final SlashCommandInteractionEvent original;
 
-	public MSBCommandInteraction(@NotNull B bot, @NotNull SlashCommandInteractionEvent event) {
+	public JDSCommandInteraction(@NotNull B bot, @NotNull SlashCommandInteractionEvent event) {
 		this.bot = Objects.requireNonNull(bot);
 		this.original = Objects.requireNonNull(event);
 	}
@@ -64,10 +64,10 @@ public class MSBCommandInteraction<B extends MCSkyBot> {
 	 */
 
 	public boolean replyCustom(String message) {
-		return new MSBMessage(getJDA(), message).reply(original);
+		return new JDSMessage(getJDA(), message).reply(original);
 	}
 
-	public boolean replyCustom(MSBMessage message) {
+	public boolean replyCustom(JDSMessage message) {
 		return message.reply(original);
 	}
 

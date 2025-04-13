@@ -3,7 +3,6 @@ package net.codersky.mcsb.message;
 import net.codersky.jsky.strings.Replacer;
 import net.codersky.jsky.yaml.YamlFile;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import org.jetbrains.annotations.NotNull;
@@ -14,44 +13,44 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * {@link YamlFile} extension to provide customizable {@link MSBMessage messages}.
+ * {@link YamlFile} extension to provide customizable {@link JDSMessage messages}.
  *
- * @since MCSkyBot 1.0.0
+ * @since JDSkyBot 1.0.0
  *
  * @author xDec0de_
  */
-public class MSBMessagesFile extends YamlFile {
+public class JDSMessagesFile extends YamlFile {
 
 	private final JDA jda;
 
-	public MSBMessagesFile(@NotNull JDA jda, @Nullable File diskPath, @NotNull String resourcePath) {
+	public JDSMessagesFile(@NotNull JDA jda, @Nullable File diskPath, @NotNull String resourcePath) {
 		super(diskPath, resourcePath);
 		this.jda = Objects.requireNonNull(jda);
 	}
 
 	@NotNull
-	public MSBMessage getDefaultMessage(@NotNull String path) {
-		return new MSBMessage(jda, "Message not found: " + path);
+	public JDSMessage getDefaultMessage(@NotNull String path) {
+		return new JDSMessage(jda, "Message not found: " + path);
 	}
 
 	@NotNull
-	private MSBMessage getMSBMessage(@NotNull String path, @NotNull Function<String, MSBMessage> getter) {
-		final MSBMessage msg = getter.apply(path);
+	private JDSMessage getMSBMessage(@NotNull String path, @NotNull Function<String, JDSMessage> getter) {
+		final JDSMessage msg = getter.apply(path);
 		return msg == null ? getDefaultMessage(path) : msg;
 	}
 
 	@NotNull
-	public MSBMessage getMSBMessage(@NotNull String path) {
-		return getMSBMessage(path, raw -> new MSBMessage(jda, raw));
+	public JDSMessage getMSBMessage(@NotNull String path) {
+		return getMSBMessage(path, raw -> new JDSMessage(jda, raw));
 	}
 
 	@NotNull
-	public MSBMessage getMSBMessage(@NotNull String path, @NotNull Replacer replacer) {
-		return getMSBMessage(path, raw -> new MSBMessage(jda, replacer.replaceAt(raw)));
+	public JDSMessage getMSBMessage(@NotNull String path, @NotNull Replacer replacer) {
+		return getMSBMessage(path, raw -> new JDSMessage(jda, replacer.replaceAt(raw)));
 	}
 
 	@NotNull
-	public MSBMessage getMSBMessage(@NotNull String path, @NotNull Object... replacements) {
+	public JDSMessage getMSBMessage(@NotNull String path, @NotNull Object... replacements) {
 		return getMSBMessage(path, new Replacer(replacements));
 	}
 

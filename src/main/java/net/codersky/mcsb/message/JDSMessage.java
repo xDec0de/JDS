@@ -14,13 +14,13 @@ import org.jetbrains.annotations.Nullable;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
-public class MSBMessage {
+public class JDSMessage {
 
 	private final String raw;
 	private final MessageEmbed embed;
 	private final boolean ephemeral;
 
-	public MSBMessage(JDA jda, @NotNull String raw) {
+	public JDSMessage(JDA jda, @NotNull String raw) {
 		this.ephemeral = raw.startsWith("eph:");
 		this.raw = this.ephemeral ? raw.substring(4) : raw;
 		if (this.raw.startsWith("msg:"))
@@ -36,7 +36,7 @@ public class MSBMessage {
 				return null;
 			final EmbedBuilder builder = new EmbedBuilder()
 					.setColor(color)
-					.setFooter("SkyBot", jda.getSelfUser().getAvatarUrl());
+					.setFooter("JDSkyBot", jda.getSelfUser().getAvatarUrl());
 			builder.setTitle(data[0]);
 			if (data.length > 1 && !data[1].isBlank())
 				builder.setDescription(data[1]);
