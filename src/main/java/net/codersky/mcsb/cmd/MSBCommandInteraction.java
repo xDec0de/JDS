@@ -3,7 +3,6 @@ package net.codersky.mcsb.cmd;
 import net.codersky.jsky.strings.Replacer;
 import net.codersky.mcsb.MCSkyBot;
 import net.codersky.mcsb.message.MSBMessage;
-import net.codersky.mcsb.message.MSBMessagesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;
@@ -18,15 +17,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class MSBCommandInteraction {
+public class MSBCommandInteraction<B extends MCSkyBot> {
 
-	private final MSBMessagesFile msgFile;
+	private final B bot;
 	private final SlashCommandInteractionEvent original;
 
-	public MSBCommandInteraction(@NotNull MSBMessagesFile msgFile, @NotNull SlashCommandInteractionEvent event) {
-		this.msgFile = Objects.requireNonNull(msgFile);
+	public MSBCommandInteraction(@NotNull B bot, @NotNull SlashCommandInteractionEvent event) {
+		this.bot = Objects.requireNonNull(bot);
 		this.original = Objects.requireNonNull(event);
 	}
+
+	/*
+	 - Utility getters
+	 */
 
 	@NotNull
 	public JDA getJDA() {
@@ -37,6 +40,10 @@ public class MSBCommandInteraction {
 	public User getUser() {
 		return original.getUser();
 	}
+
+	/*
+	 - Reply status
+	 */
 
 	public boolean deferReply() {
 		original.deferReply();
@@ -52,6 +59,10 @@ public class MSBCommandInteraction {
 		return original.isAcknowledged();
 	}
 
+	/*
+	 - Reply (Custom)
+	 */
+
 	public boolean replyCustom(String message) {
 		return new MSBMessage(getJDA(), message).reply(original);
 	}
@@ -60,16 +71,20 @@ public class MSBCommandInteraction {
 		return message.reply(original);
 	}
 
+	/*
+	 - Reply (From messages file)
+	 */
+
 	public boolean reply(@NotNull String path) {
-		return msgFile.reply(getUser(), original, path);
+		return bot.getMessages().reply(getUser(), original, path);
 	}
 
 	public boolean reply(@NotNull String path, @NotNull Replacer replacer) {
-		return msgFile.reply(getUser(), original, path, replacer);
+		return bot.getMessages().reply(getUser(), original, path, replacer);
 	}
 
 	public boolean reply(@NotNull String path, @NotNull Object... replacements) {
-		return msgFile.reply(getUser(), original, path, replacements);
+		return bot.getMessages().reply(getUser(), original, path, replacements);
 	}
 
 	/*
