@@ -59,6 +59,12 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter imp
 	public abstract boolean onSlashCommand(JDSCommandInteraction<B> interaction);
 
 	@NotNull
+	@Override
+	public SlashCommandData getSlashCommandData() {
+		return this.data;
+	}
+
+	@NotNull
 	public JDSCommand<B> addOption(OptionType type, String name, String desc) {
 		this.data.addOption(type, name, desc);
 		return this;
