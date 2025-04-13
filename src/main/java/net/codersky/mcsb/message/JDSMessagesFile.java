@@ -21,11 +21,16 @@ import java.util.function.Function;
  */
 public class JDSMessagesFile extends YamlFile {
 
-	private final JDA jda;
+	private JDA jda = null;
 
-	public JDSMessagesFile(@NotNull JDA jda, @Nullable File diskPath, @NotNull String resourcePath) {
+	public JDSMessagesFile(@Nullable File diskPath, @NotNull String resourcePath) {
 		super(diskPath, resourcePath);
+	}
+
+	@NotNull
+	public JDSMessagesFile setJDA(@NotNull JDA jda) {
 		this.jda = Objects.requireNonNull(jda);
+		return this;
 	}
 
 	@NotNull

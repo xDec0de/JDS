@@ -6,21 +6,13 @@ import net.codersky.mcsb.message.JDSMessagesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.Objects;
 
 public abstract class JDSkyBot {
 
-	private final File dataFolder;
-	private final YamlFile cfg;
-	private final CLICommandManager cliCommandManager = new CLICommandManager();
 	private JDA jda;
-
-	public JDSkyBot(@NotNull File dataFolder) {
-		this.dataFolder = dataFolder;
-		this.cfg = new YamlFile(dataFolder, "config.yml");
-	}
 
 	/*
 	 - Bot start
@@ -40,15 +32,21 @@ public abstract class JDSkyBot {
 	}
 
 	private void setupCLI() {
-		cliCommandManager.registerConsumer("stop", args -> {
-			cliCommandManager.stop();
+		final CLICommandManager manager = getCLICommandManager();
+		if (manager == null)
+			return;
+		manager.registerConsumer("stop", args -> {
+			manager.stop();
 			stop(args);
 			afterStop();
 		});
-		cliCommandManager.start();
+		manager.start();
 	}
 
 	private BotStartResult setupConfig() {
+		final YamlFile cfg = getConfig();
+		if (cfg == null)
+			return BotStartResult.OK;
 		return cfg.setup(err -> {
 			System.err.println("Failed to setup config file - " + err.getMessage() + ":");
 			err.printStackTrace(System.err);
@@ -56,7 +54,7 @@ public abstract class JDSkyBot {
 	}
 
 	private BotStartResult setupJDA() {
-		final String token = getConfig().getString("token", "");
+		final String token = getToken();
 		if (token.isEmpty())
 			return BotStartResult.NO_BOT_TOKEN;
 		jda = JDABuilder.createDefault(token).build();
@@ -104,25 +102,57 @@ public abstract class JDSkyBot {
 	 */
 
 	@NotNull
-	public CLICommandManager getCLICommandManager() {
-		return cliCommandManager;
-	}
-
-	@NotNull
-	public File getDataFolder() {
-		return dataFolder;
-	}
-
-	@NotNull
-	public YamlFile getConfig() {
-		return cfg;
-	}
-
-	@NotNull
-	public abstract JDSMessagesFile getMessages();
-
-	@NotNull
 	public JDA getJDA() {
 		return jda;
 	}
+
+	/**
+	 * Gets the {@link CLICommandManager} of this {@link JDSkyBot}.
+	 * This can be {@code null}, in which case, JDSky won't register
+	 * the built-in stop CLI command. We highly recommend to use
+	 * a {@link CLICommandManager}, as it provides control over your
+	 * bot from the command line, but do as you please.
+	 *
+	 * @return The {@link CLICommandManager} of this {@link JDSkyBot},
+	 * can be {@code null} if the bot doesn't support CLI commands.
+	 *
+	 * @since JDSky 1.0.0
+	 */
+	@Nullable
+	public abstract CLICommandManager getCLICommandManager();
+
+	/**
+	 * Gets the {@link YamlFile} that provides configuration options
+	 * for this {@link JDSkyBot}. This is optional, and may be {@code null}.
+	 * But if you opt to not have a config file on your bot, then you must
+	 * override the {@link #getToken()} method with a way to get your bot
+	 * token. If you do provide a {@link YamlFile} instance, then JDSky sets
+	 * it up for you automatically. By default, the token is expected to
+	 * be located at the "token" path of your config.
+	 *
+	 * @return The {@link YamlFile config} file of this {@link JDSkyBot}.
+	 * May be {@code null} if the bot doesn't have a config file.
+	 *
+	 * @since JDSky 1.0.0
+	 */
+	@Nullable
+	public abstract YamlFile getConfig();
+
+	/**
+	 * Gets the token used for this bot. By default, this token is obtained
+	 * from {@link #getConfig()}, at the "token" path of it. If
+	 * {@link #getConfig()} is {@code null}. Then an empty string is returned.
+	 * You can of course override this method if you want to implement your
+	 * own logic to get your bot token.
+	 *
+	 * @return The token of this {@link JDSkyBot}.
+	 */
+	@NotNull
+	protected String getToken() {
+		final YamlFile cfg = getConfig();
+		return cfg == null ? "" : cfg.getString("token", "");
+	}
+
+	@Nullable
+	public abstract JDSMessagesFile getMessages();
 }
