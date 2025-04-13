@@ -5,8 +5,10 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -39,7 +41,7 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter {
 
 	@Override
 	public final void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-		onSlashCommand(new JDSCommandInteraction<B>(this.bot, event));
+		onSlashCommand(new JDSCommandInteraction<>(this.bot, event));
 	}
 
 	/**
@@ -73,6 +75,26 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter {
 	@NotNull
 	public JDSCommand<B> addOption(OptionType type, String name, String desc, boolean required, boolean hasAutoComplete) {
 		this.data.addOption(type, name, desc, required, hasAutoComplete);
+		return this;
+	}
+
+	/**
+	 * Adds up to {@link CommandData#MAX_OPTIONS 25} {@link JDSCommand commands}
+	 * as subcommands of this {@link JDSCommand}. Note that adding subcommands
+	 * makes the base command (This command) no longer executable. Which means
+	 * that you can't add subcommands and {@link #addOption(OptionType, String, String) options}
+	 * at the same time.
+	 *
+	 * @param subcommands The {@link JDSCommand subcommands} to add to this {@link JDSCommand}.
+	 *
+	 * @return This {@link JDSCommand}, the base command.
+	 */
+	@SafeVarargs
+	public final JDSCommand<B> addSubCommand(@NotNull JDSCommand<B>... subcommands) {
+		final SubcommandData[] data = new SubcommandData[subcommands.length];
+		for (int i = 0; i < subcommands.length; i++)
+			data[i] = SubcommandData.fromData(subcommands[i].data.toData());
+		this.data.addSubcommands(data);
 		return this;
 	}
 }
