@@ -14,9 +14,9 @@ repositories {
 
 dependencies {
 	compileOnly("org.jetbrains:annotations:26.0.2")
-	implementation("net.codersky.jsky:base:1.0.0-SNAPSHOT")
-	implementation("net.codersky.jsky:yaml:1.0.0-SNAPSHOT")
-	implementation("net.dv8tion:JDA:5.3.2") {
+	compileOnly("net.codersky.jsky:base:1.0.0-SNAPSHOT")
+	compileOnly("net.codersky.jsky:yaml:1.0.0-SNAPSHOT")
+	compileOnly("net.dv8tion:JDA:5.3.2") {
 		exclude(module="opus-java")
 	}
 
