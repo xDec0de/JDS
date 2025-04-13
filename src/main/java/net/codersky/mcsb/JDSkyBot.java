@@ -1,10 +1,14 @@
 package net.codersky.mcsb;
 
 import net.codersky.jsky.cli.CLICommandManager;
+import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.yaml.YamlFile;
+import net.codersky.mcsb.cmd.JDSICommand;
 import net.codersky.mcsb.message.JDSMessagesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -155,4 +159,19 @@ public abstract class JDSkyBot {
 
 	@Nullable
 	public abstract JDSMessagesFile getMessages();
+
+	/*
+	 - Command registration
+	 */
+
+	@NotNull
+	public JDSkyBot addCommands(@NotNull Guild guild, @NotNull JDSICommand @NotNull ... commands) {
+		final SlashCommandData[] data = new SlashCommandData[commands.length];
+		for (int i = 0; i < commands.length; i++) {
+			data[i] = commands[i].getSlashCommandData();
+			jda.addEventListener(commands[i]);
+		}
+		guild.updateCommands().addCommands(data).queue();
+		return this;
+	}
 }
