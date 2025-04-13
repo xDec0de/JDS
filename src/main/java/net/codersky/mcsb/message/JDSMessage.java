@@ -23,7 +23,7 @@ public class JDSMessage {
 	private MessageEmbed embed = null;
 	private final boolean ephemeral;
 
-	public JDSMessage(JDA jda, @NotNull String raw) {
+	public JDSMessage(@NotNull String raw) {
 		this.ephemeral = raw.startsWith("eph:");
 		this.raw = this.ephemeral ? raw.substring(4) : raw;
 		JStrings.match(this.raw, "<e", "/>", tokens -> {

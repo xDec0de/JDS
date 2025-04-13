@@ -64,7 +64,7 @@ public class JDSCommandInteraction<B extends JDSkyBot> {
 	 */
 
 	public boolean replyCustom(String message) {
-		return new JDSMessage(getJDA(), message).reply(original);
+		return new JDSMessage(message).reply(original);
 	}
 
 	public boolean replyCustom(JDSMessage message) {

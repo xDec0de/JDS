@@ -2,14 +2,12 @@ package net.codersky.mcsb.message;
 
 import net.codersky.jsky.strings.Replacer;
 import net.codersky.jsky.yaml.YamlFile;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -21,21 +19,13 @@ import java.util.function.Function;
  */
 public class JDSMessagesFile extends YamlFile {
 
-	private JDA jda = null;
-
 	public JDSMessagesFile(@Nullable File diskPath, @NotNull String resourcePath) {
 		super(diskPath, resourcePath);
 	}
 
 	@NotNull
-	public JDSMessagesFile setJDA(@NotNull JDA jda) {
-		this.jda = Objects.requireNonNull(jda);
-		return this;
-	}
-
-	@NotNull
 	public JDSMessage getDefaultMessage(@NotNull String path) {
-		return new JDSMessage(jda, "Message not found: " + path);
+		return new JDSMessage("Message not found: " + path);
 	}
 
 	@NotNull
@@ -46,12 +36,12 @@ public class JDSMessagesFile extends YamlFile {
 
 	@NotNull
 	public JDSMessage getMSBMessage(@NotNull String path) {
-		return getMSBMessage(path, raw -> new JDSMessage(jda, raw));
+		return getMSBMessage(path, JDSMessage::new);
 	}
 
 	@NotNull
 	public JDSMessage getMSBMessage(@NotNull String path, @NotNull Replacer replacer) {
-		return getMSBMessage(path, raw -> new JDSMessage(jda, replacer.replaceAt(raw)));
+		return getMSBMessage(path, raw -> new JDSMessage(replacer.replaceAt(raw)));
 	}
 
 	@NotNull
