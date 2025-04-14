@@ -32,6 +32,11 @@ public class JDSCommandInteraction<B extends JDSkyBot> {
 	 */
 
 	@NotNull
+	public B getBot() {
+		return bot;
+	}
+
+	@NotNull
 	public JDA getJDA() {
 		return original.getJDA();
 	}

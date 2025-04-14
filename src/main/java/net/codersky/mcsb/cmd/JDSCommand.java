@@ -60,6 +60,11 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter imp
 	public abstract boolean onSlashCommand(JDSCommandInteraction<B> interaction);
 
 	@NotNull
+	public B getBot() {
+		return bot;
+	}
+
+	@NotNull
 	@Override
 	public SlashCommandData getSlashCommandData() {
 		return this.data;
