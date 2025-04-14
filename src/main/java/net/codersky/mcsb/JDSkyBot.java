@@ -101,7 +101,7 @@ public abstract class JDSkyBot {
 		final CLICommandManager cli = getCLICommandManager();
 		if (cli != null)
 			cli.stop();
-		jda.shutdownNow();
+		jda.shutdown();
 	}
 
 	/*
