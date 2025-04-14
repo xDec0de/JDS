@@ -85,7 +85,10 @@ public abstract class JDSkyBot {
 	 * array can be empty. This just emulates arguments being passed to
 	 * the built-in stop CLI command.
 	 *
-	 * @since JDSkyBot 1.0.0
+	 * @since JDSky 1.0.0
+	 *
+	 * @see #stop()
+	 * @see #onStop(String[])
 	 */
 	public void stop(final @NotNull String @NotNull [] args) {
 		Objects.requireNonNull(args, "Stop args array cannot be null.");
@@ -95,6 +98,34 @@ public abstract class JDSkyBot {
 		afterStop();
 	}
 
+	/**
+	 * Stops this {@link JDSkyBot} without command arguments. Stopping
+	 * the bot is usually done by the built-in stop CLI command, but
+	 * you can also stop the bot manually with this method.
+	 *
+	 * @since JDSky 1.0.0
+	 *
+	 * @see #stop(String[])
+	 * @see #onStop(String[])
+	 */
+	public void stop() {
+		stop(new String[0]);
+	}
+
+	/**
+	 * This method is automatically called whenever the bot is signaled
+	 * to {@link #stop(String[]) stop}. Here, you can add any task that
+	 * is needed before the bot actually shuts down. JSky will do the
+	 * following for you <b>after</b> this method is called:
+	 * <ul>
+	 *     <li>Stop the {@link #getCLICommandManager() CLICommandManager} (If any)</li>
+	 *     <li>{@link JDA#shutdown() Shutdown JDA}</li>
+	 * </ul>
+	 *
+	 * @param args The arguments provided on the stop command, may be empty.
+	 *
+	 * @since JDSky 1.0.0
+	 */
 	protected abstract void onStop(final @NotNull String @NotNull [] args);
 
 	private void afterStop() {
