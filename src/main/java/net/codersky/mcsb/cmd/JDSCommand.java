@@ -39,7 +39,8 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter imp
 
 	@Override
 	public final void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-		onSlashCommand(new JDSCommandInteraction<>(this.bot, event));
+		if (data.getName().equals(event.getName()))
+			onSlashCommand(new JDSCommandInteraction<>(this.bot, event));
 	}
 
 	/**
