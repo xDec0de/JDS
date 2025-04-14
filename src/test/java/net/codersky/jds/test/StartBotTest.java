@@ -46,6 +46,7 @@ public class StartBotTest {
 		final Guild guild = bot.getJDA().getGuildById(this.guild);
 		if (guild == null)
 			return;
+		bot.addCommands(guild, new StopCmd(bot), new EmbedTestCmd(bot));
 		while (bot.getCLICommandManager().isRunning())
 			continue;
 		Assertions.assertTrue(true);
