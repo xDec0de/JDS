@@ -98,6 +98,9 @@ public abstract class JDSkyBot {
 	protected abstract void onStop(final @NotNull String @NotNull [] args);
 
 	private void afterStop() {
+		final CLICommandManager cli = getCLICommandManager();
+		if (cli != null)
+			cli.stop();
 		jda.shutdownNow();
 	}
 
