@@ -10,31 +10,23 @@ import java.nio.file.Path;
 
 public class StartBotTest {
 
-	private final String token;
 	private final long guild;
 	final File dataFolder = Path.of("./src/test/run/").toFile();
-	final TestBot bot = new TestBot(dataFolder);
+	final TestBot bot = new TestBot(dataFolder, null);
 
 	public StartBotTest() throws IOException {
-		final File tokenFile = new File(dataFolder, "/token");
 		final File guildFile = new File(dataFolder, "/guild");
-		if (!tokenFile.exists() || !guildFile.exists()) {
+		if (!dataFolder.exists())
 			dataFolder.mkdirs();
-			tokenFile.createNewFile();
+		if (!guildFile.exists())
 			guildFile.createNewFile();
-		}
-		token = Files.readString(tokenFile.toPath());
 		guild = Long.valueOf(Files.readString(guildFile.toPath()));
 	}
 
 	@Test
-	public void testBotStart() {
-		Assertions.assertEquals(bot.start(), BotStartResult.NO_BOT_TOKEN);
-		bot.getConfig().setString("token", token);
-		bot.getConfig().save();
+	public void testBotStart() throws IOException {
+		Assertions.assertEquals(new TestBot(dataFolder, "").start(), BotStartResult.NO_BOT_TOKEN);
 		Assertions.assertEquals(bot.start(), BotStartResult.OK);
-		bot.getConfig().setString("token", "");
-		bot.getConfig().save();
 	}
 
 	@Test
@@ -45,8 +37,6 @@ public class StartBotTest {
 
 	@Test
 	public void testBotManually() {
-		bot.getConfig().setString("token", token);
-		bot.getConfig().save();
 		Assertions.assertEquals(BotStartResult.OK, bot.start());
 		Assertions.assertNotNull(bot.getJDA());
 		final Guild guild = bot.getJDA().getGuildById(this.guild);
