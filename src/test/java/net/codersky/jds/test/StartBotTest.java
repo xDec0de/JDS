@@ -1,3 +1,7 @@
+package net.codersky.jds.test;
+
+import net.codersky.jds.test.cmd.EmbedTestCmd;
+import net.codersky.jds.test.cmd.StopCmd;
 import net.codersky.mcsb.BotStartResult;
 import net.dv8tion.jda.api.entities.Guild;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +46,6 @@ public class StartBotTest {
 		final Guild guild = bot.getJDA().getGuildById(this.guild);
 		if (guild == null)
 			return;
-		bot.addCommands(guild, new EmbedTestCmd(bot));
 		while (bot.getCLICommandManager().isRunning())
 			continue;
 		Assertions.assertTrue(true);

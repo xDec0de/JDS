@@ -1,3 +1,5 @@
+package net.codersky.jds.test;
+
 import net.codersky.jsky.cli.CLICommandManager;
 import net.codersky.jsky.yaml.YamlFile;
 import net.codersky.mcsb.JDSkyBot;
