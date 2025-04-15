@@ -17,6 +17,6 @@ public class EmbedTestCmd extends JDSCommand<TestBot> {
 	public boolean onSlashCommand(JDSCommandInteraction<TestBot> interaction) {
 		final String raw = interaction.asString("embed", "JDSky!");
 		interaction.deferReply();
-		return interaction.replyCustom(raw);
+		return interaction.replyCustom(raw.replace("\\n", "\n"));
 	}
 }
