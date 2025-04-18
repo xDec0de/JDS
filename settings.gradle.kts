@@ -1,1 +1,1 @@
-rootProject.name = "MCSkyBot"
+rootProject.name = "jds"
