@@ -4,6 +4,7 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
 	`java-library`
+	`maven-publish`
 	id("com.gradleup.shadow") version "8.3.5"
 }
 
@@ -31,9 +32,50 @@ dependencies {
 	}
 }
 
-tasks.test {
-	useJUnitPlatform()
-	testLogging {
-		events("passed", "skipped", "failed")
+tasks {
+	test {
+		useJUnitPlatform()
+	}
+
+	named("assemble") {
+		dependsOn("shadowJar")
+	}
+
+	register<Jar>("sourcesJar") {
+		archiveClassifier.set("sources")
+		from(sourceSets.main.get().allSource)
 	}
 }
+
+publishing {
+	repositories {
+		maven {
+			val snapshot = version.toString().endsWith("SNAPSHOT")
+			url = uri("https://repo.codersky.net/" + if (snapshot) "snapshots" else "releases")
+			name = if (snapshot) "cskSnapshots" else "cskReleases"
+			credentials(PasswordCredentials::class)
+			authentication {
+				create<BasicAuthentication>("basic")
+			}
+		}
+	}
+
+	publications {
+		create<MavenPublication>("maven") {
+			groupId = project.group.toString()
+			artifactId = project.name
+
+			pom {
+				packaging = "jar"
+			}
+
+			// Include the main JAR
+			artifact(tasks["shadowJar"]) {
+				classifier = ""
+			}
+			// Include the sources JAR
+			artifact(tasks["sourcesJar"])
+		}
+	}
+}
+

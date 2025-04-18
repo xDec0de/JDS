@@ -1,8 +1,8 @@
 package net.codersky.jds.test.cmd;
 
+import net.codersky.jds.cmd.JDSCommand;
+import net.codersky.jds.cmd.JDSCommandInteraction;
 import net.codersky.jds.test.TestBot;
-import net.codersky.mcsb.cmd.JDSCommand;
-import net.codersky.mcsb.cmd.JDSCommandInteraction;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import org.jetbrains.annotations.NotNull;
 
