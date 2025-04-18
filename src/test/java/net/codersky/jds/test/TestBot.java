@@ -1,9 +1,9 @@
 package net.codersky.jds.test;
 
+import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.message.JDSMessagesFile;
 import net.codersky.jsky.cli.CLICommandManager;
 import net.codersky.jsky.yaml.YamlFile;
-import net.codersky.mcsb.JDSkyBot;
-import net.codersky.mcsb.message.JDSMessagesFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

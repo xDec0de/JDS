@@ -1,10 +1,9 @@
-package net.codersky.mcsb;
+package net.codersky.jds;
 
+import net.codersky.jds.cmd.JDSICommand;
+import net.codersky.jds.message.JDSMessagesFile;
 import net.codersky.jsky.cli.CLICommandManager;
-import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.yaml.YamlFile;
-import net.codersky.mcsb.cmd.JDSICommand;
-import net.codersky.mcsb.message.JDSMessagesFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;

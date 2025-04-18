@@ -1,9 +1,7 @@
-package net.codersky.mcsb.message.embed.pattern;
+package net.codersky.jds.message.embed.pattern;
 
 import net.codersky.jsky.annotations.KeyPattern;
-import net.codersky.jsky.strings.JStrings;
 import net.dv8tion.jda.api.EmbedBuilder;
-import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;

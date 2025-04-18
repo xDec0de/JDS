@@ -1,4 +1,4 @@
-package net.codersky.mcsb.message;
+package net.codersky.jds.message;
 
 import net.codersky.jsky.strings.Replacer;
 import net.codersky.jsky.yaml.YamlFile;

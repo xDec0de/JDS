@@ -1,8 +1,8 @@
 package net.codersky.jds.test.cmd;
 
-import net.codersky.mcsb.JDSkyBot;
-import net.codersky.mcsb.cmd.JDSCommand;
-import net.codersky.mcsb.cmd.JDSCommandInteraction;
+import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.cmd.JDSCommand;
+import net.codersky.jds.cmd.JDSCommandInteraction;
 import org.jetbrains.annotations.NotNull;
 
 public class StopCmd extends JDSCommand<JDSkyBot> {

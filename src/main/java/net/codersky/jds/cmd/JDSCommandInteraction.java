@@ -1,8 +1,8 @@
-package net.codersky.mcsb.cmd;
+package net.codersky.jds.cmd;
 
+import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.message.JDSMessage;
 import net.codersky.jsky.strings.Replacer;
-import net.codersky.mcsb.JDSkyBot;
-import net.codersky.mcsb.message.JDSMessage;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.Member;

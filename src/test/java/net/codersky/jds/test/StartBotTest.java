@@ -1,8 +1,8 @@
 package net.codersky.jds.test;
 
+import net.codersky.jds.BotStartResult;
 import net.codersky.jds.test.cmd.EmbedTestCmd;
 import net.codersky.jds.test.cmd.StopCmd;
-import net.codersky.mcsb.BotStartResult;
 import net.dv8tion.jda.api.entities.Guild;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

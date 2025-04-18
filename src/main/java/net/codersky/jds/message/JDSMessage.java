@@ -1,7 +1,7 @@
-package net.codersky.mcsb.message;
+package net.codersky.jds.message;
 
+import net.codersky.jds.message.embed.JDSEmbedBuilder;
 import net.codersky.jsky.strings.JStrings;
-import net.codersky.mcsb.message.embed.JDSEmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;

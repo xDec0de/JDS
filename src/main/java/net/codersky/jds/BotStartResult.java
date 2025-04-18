@@ -1,4 +1,4 @@
-package net.codersky.mcsb;
+package net.codersky.jds;
 
 public enum BotStartResult {
 

@@ -1,4 +1,4 @@
-package net.codersky.mcsb.message.embed.pattern;
+package net.codersky.jds.message.embed.pattern;
 
 import net.codersky.jsky.JColor;
 import net.codersky.jsky.annotations.KeyPattern;

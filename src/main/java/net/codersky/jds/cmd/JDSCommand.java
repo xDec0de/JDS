@@ -1,6 +1,6 @@
-package net.codersky.mcsb.cmd;
+package net.codersky.jds.cmd;
 
-import net.codersky.mcsb.JDSkyBot;
+import net.codersky.jds.JDSkyBot;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

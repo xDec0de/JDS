@@ -1,4 +1,4 @@
-package net.codersky.mcsb.cmd;
+package net.codersky.jds.cmd;
 
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;

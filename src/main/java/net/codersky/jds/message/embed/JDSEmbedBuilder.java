@@ -1,8 +1,8 @@
-package net.codersky.mcsb.message.embed;
+package net.codersky.jds.message.embed;
 
+import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
+import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jsky.strings.JStrings;
-import net.codersky.mcsb.message.embed.pattern.ColorEmbedPattern;
-import net.codersky.mcsb.message.embed.pattern.EmbedPattern;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
