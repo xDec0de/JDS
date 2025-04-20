@@ -14,10 +14,13 @@ repositories {
 }
 
 dependencies {
+
+	val jda = "5.4.0"
+
 	compileOnly("org.jetbrains:annotations:26.0.2")
 	compileOnly("net.codersky.jsky:base:1.0.0-SNAPSHOT")
 	compileOnly("net.codersky.jsky:yaml:1.0.0-SNAPSHOT")
-	compileOnly("net.dv8tion:JDA:5.3.2") {
+	compileOnly("net.dv8tion:JDA:$jda") {
 		exclude(module="opus-java")
 	}
 
@@ -27,7 +30,7 @@ dependencies {
 	compileOnly("org.jetbrains:annotations:26.0.2")
 	testImplementation("net.codersky.jsky:base:1.0.0-SNAPSHOT")
 	testImplementation("net.codersky.jsky:yaml:1.0.0-SNAPSHOT")
-	testImplementation("net.dv8tion:JDA:5.3.2") {
+	testImplementation("net.dv8tion:JDA:$jda") {
 		exclude(module="opus-java")
 	}
 }
