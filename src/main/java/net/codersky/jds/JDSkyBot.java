@@ -60,7 +60,7 @@ public abstract class JDSkyBot {
 		final String token = getToken();
 		if (token.isEmpty())
 			return BotStartResult.NO_BOT_TOKEN;
-		jda = JDABuilder.createDefault(token).build();
+		jda = getJDABuilder(token).build();
 		try {
 			jda.awaitReady();
 		} catch (InterruptedException e) {
@@ -68,6 +68,26 @@ public abstract class JDSkyBot {
 			return BotStartResult.JDA_SETUP_FAIL;
 		}
 		return BotStartResult.OK;
+	}
+
+	/**
+	 * Gets the {@link JDABuilder} used to build a {@link JDA}
+	 * instance when this bot is {@link #start() started}.
+	 * By default, {@link JDABuilder#createDefault(String)} is
+	 * used, but you can override this method to use your own.
+	 *
+	 * @param token The token of the bot, obtained via
+	 * {@link #getToken()}. You don't need to verify the token,
+	 * JDSky will take care of that for you.
+	 *
+	 * @return A {@link JDABuilder} made with the provided bot
+	 * {@code token}.
+	 *
+	 * @since JDSky 1.0.0
+	 */
+	@NotNull
+	protected JDABuilder getJDABuilder(@NotNull String token) {
+		return JDABuilder.createDefault(token);
 	}
 
 	/*
