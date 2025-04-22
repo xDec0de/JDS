@@ -1,6 +1,7 @@
 package net.codersky.jds.message.embed.pattern;
 
 import net.codersky.jsky.annotations.KeyPattern;
+import net.codersky.jsky.strings.tag.JTag;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,7 +9,7 @@ import java.util.function.BiConsumer;
 
 public interface EmbedPattern {
 
-	void apply(@NotNull EmbedBuilder embed, @NotNull String context);
+	void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra);
 
 	@NotNull
 	@KeyPattern
@@ -40,7 +41,7 @@ public interface EmbedPattern {
 	static EmbedPattern of(BiConsumer<EmbedBuilder, String> apply, @NotNull @KeyPattern String key, @NotNull String... keyAliases) {
 		return new EmbedPattern() {
 			@Override
-			public void apply(@NotNull EmbedBuilder embed, @NotNull String context) {
+			public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
 				apply.accept(embed, context);
 			}
 
@@ -62,4 +63,6 @@ public interface EmbedPattern {
 	static EmbedPattern of(BiConsumer<EmbedBuilder, String> apply, @NotNull @KeyPattern String key) {
 		return of(apply, key, new String[0]);
 	}
+
+
 }

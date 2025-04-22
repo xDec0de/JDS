@@ -3,13 +3,14 @@ package net.codersky.jds.message.embed;
 import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jsky.strings.JStrings;
+import net.codersky.jsky.strings.tag.JTag;
+import net.codersky.jsky.strings.tag.JTagParser;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class JDSEmbedBuilder {
 
@@ -24,6 +25,10 @@ public class JDSEmbedBuilder {
 		addPattern(EmbedPattern.of(EmbedBuilder::setThumbnail, "thumbnail", "thmb"));
 		addPattern(EmbedPattern.of(EmbedBuilder::setAuthor, "author"));
 	}
+
+	/*
+	 - Pattern management
+	 */
 
 	@Nullable
 	public static EmbedPattern getPattern(@NotNull String key) {
@@ -51,71 +56,26 @@ public class JDSEmbedBuilder {
 		return true;
 	}
 
+	/*
+	 - Embed building
+	 */
+
+	@Nullable
 	public static MessageEmbed build(@NotNull String raw) {
+		final JTag embed = JTagParser.parseOne(raw);
+		return embed == null ? null : build(embed);
+	}
+
+	@Nullable
+	public static MessageEmbed build(@NotNull JTag tag) {
+		if (!tag.getName().equals("e") && tag.getName().equals("embed"))
+			return null;
 		final EmbedBuilder builder = new EmbedBuilder();
-		final List<String> tokens = tokenize(raw);
-		for (String token : tokens)
-			processToken(token.substring(1, token.length() - 1), builder);
+		for (final JTag modifier : tag.getChildren()) {
+			final EmbedPattern pattern = getPattern(modifier.getName());
+			if (pattern != null)
+				pattern.apply(builder, modifier.getContent(), modifier.getChildren());
+		}
 		return builder.build();
-	}
-
-	private static List<String> tokenize(String input) {
-		final List<String> tokens = new ArrayList<>();
-		StringBuilder token = new StringBuilder();
-		boolean inToken = false;
-		boolean escapeNext = false;
-
-		for (int i = 0; i < input.length(); i++) {
-			char c = input.charAt(i);
-			if (escapeNext) {
-				token.append(c);
-				escapeNext = false;
-				continue;
-			}
-			if (c == '\\') {
-				escapeNext = true;
-				continue;
-			}
-			if (c == '<' && !inToken) {
-				inToken = true;
-				token = new StringBuilder();
-				token.append(c);
-			} else if (c == '>' && inToken) {
-				token.append(c);
-				tokens.add(token.toString());
-				inToken = false;
-			} else if (inToken)
-				token.append(c);
-		}
-		return tokens;
-	}
-
-	private static void processToken(String token, @NotNull EmbedBuilder builder) {
-		int colonIndex = token.indexOf(':');
-		if (colonIndex == -1)
-			return;
-		final String key = token.substring(0, colonIndex).trim().toLowerCase();
-		final String content = unescape(token.substring(colonIndex + 1).trim());
-		if (key.isEmpty() || content.isEmpty())
-			return;
-		final EmbedPattern pattern = getPattern(key);
-		if (pattern != null)
-			pattern.apply(builder, content);
-	}
-
-	private static String unescape(String input) {
-		final StringBuilder result = new StringBuilder();
-		boolean escapeNext = false;
-		for (int i = 0; i < input.length(); i++) {
-			final char c = input.charAt(i);
-			if (escapeNext) {
-				result.append(c);
-				escapeNext = false;
-			} else if (c == '\\')
-				escapeNext = true;
-			else
-				result.append(c);
-		}
-		return result.toString();
 	}
 }

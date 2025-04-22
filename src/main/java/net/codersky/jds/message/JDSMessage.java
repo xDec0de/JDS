@@ -1,7 +1,6 @@
 package net.codersky.jds.message;
 
 import net.codersky.jds.message.embed.JDSEmbedBuilder;
-import net.codersky.jsky.strings.JStrings;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -16,15 +15,13 @@ import java.util.concurrent.TimeUnit;
 public class JDSMessage {
 
 	private final String raw;
-	private MessageEmbed embed = null;
+	private final MessageEmbed embed;
 	private final boolean ephemeral;
 
 	public JDSMessage(@NotNull String raw) {
 		this.ephemeral = raw.startsWith("eph:");
 		this.raw = this.ephemeral ? raw.substring(4) : raw;
-		JStrings.match(this.raw, "<e", "/>", tokens -> {
-			this.embed = JDSEmbedBuilder.build(tokens);
-		});
+		this.embed = JDSEmbedBuilder.build(this.raw);
 	}
 
 	/*
