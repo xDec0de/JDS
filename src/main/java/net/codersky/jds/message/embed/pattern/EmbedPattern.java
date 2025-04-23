@@ -8,8 +8,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiConsumer;
-
 public interface EmbedPattern {
 
 	String[] NO_ARGS = new String[0];
@@ -57,35 +55,5 @@ public interface EmbedPattern {
 		if (url == null || !JDSEmbedBuilder.isUrlOrAttachment(url.getContent()))
 			return null;
 		return url.getContent();
-	}
-
-	/*
-	 - Static builders
-	 */
-
-	static EmbedPattern of(BiConsumer<EmbedBuilder, String> apply, @NotNull @KeyPattern String key, @NotNull String... keyAliases) {
-		return new EmbedPattern() {
-			@Override
-			public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
-				apply.accept(embed, context);
-			}
-
-			@Override
-			@NotNull
-			@KeyPattern
-			public String getKey() {
-				return key;
-			}
-
-			@Override
-			@NotNull
-			public String @NotNull [] getAliases() {
-				return keyAliases;
-			}
-		};
-	}
-
-	static EmbedPattern of(BiConsumer<EmbedBuilder, String> apply, @NotNull @KeyPattern String key) {
-		return of(apply, key, new String[0]);
 	}
 }
