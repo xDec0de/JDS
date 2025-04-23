@@ -1,28 +1,21 @@
 package net.codersky.jds.message.embed.pattern;
 
-import net.codersky.jds.message.embed.JDSEmbedBuilder;
 import net.codersky.jsky.annotations.KeyPattern;
 import net.codersky.jsky.strings.tag.JTag;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
 
-public class ImageEmbedPattern implements EmbedPattern {
-
-	private final String[] aliases = {"img"};
+public class AuthorEmbedPattern implements EmbedPattern {
 
 	@Override
 	public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
-		if (JDSEmbedBuilder.isUrlOrAttachment(context))
-			embed.setImage(context);
+		if (context.length() <= MessageEmbed.AUTHOR_MAX_LENGTH)
+			embed.setAuthor(context, getUrl("url", extra), getUrl("icon", extra));
 	}
 
 	@Override
 	public @NotNull @KeyPattern String getKey() {
-		return "image";
-	}
-
-	@Override
-	public @NotNull String @NotNull [] getAliases() {
-		return aliases;
+		return "author";
 	}
 }

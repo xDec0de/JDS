@@ -11,7 +11,7 @@ public class FooterEmbedPattern implements EmbedPattern {
 	@Override
 	public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
 		if (context.length() <= MessageEmbed.TEXT_MAX_LENGTH)
-			embed.setFooter(context, getUrl(extra));
+			embed.setFooter(context, getUrl("url", extra));
 	}
 
 	@Override

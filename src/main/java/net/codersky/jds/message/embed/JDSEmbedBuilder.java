@@ -1,5 +1,6 @@
 package net.codersky.jds.message.embed;
 
+import net.codersky.jds.message.embed.pattern.AuthorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
@@ -26,7 +27,7 @@ public class JDSEmbedBuilder {
 		addPattern(new FooterEmbedPattern());
 		addPattern(new ImageEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setThumbnail, "thumbnail", "thmb"));
-		addPattern(EmbedPattern.of(EmbedBuilder::setAuthor, "author"));
+		addPattern(new AuthorEmbedPattern());
 	}
 
 	/*

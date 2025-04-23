@@ -11,7 +11,7 @@ public class TitleEmbedPattern implements EmbedPattern {
 	@Override
 	public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
 		if (context.length() <= MessageEmbed.TITLE_MAX_LENGTH)
-			embed.setTitle(context, getUrl(extra));
+			embed.setTitle(context, getUrl("url", extra));
 	}
 
 	@Override

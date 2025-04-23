@@ -52,8 +52,8 @@ public interface EmbedPattern {
 	 */
 
 	@Nullable
-	default String getUrl(@NotNull JTag @NotNull [] extra) {
-		final JTag url = JCollections.get(extra, tag -> tag.getName().equals("url"));
+	default String getUrl(@NotNull String name, @NotNull JTag @NotNull [] extra) {
+		final JTag url = JCollections.get(extra, tag -> tag.getName().equals(name));
 		if (url == null || !JDSEmbedBuilder.isUrlOrAttachment(url.getContent()))
 			return null;
 		return url.getContent();
