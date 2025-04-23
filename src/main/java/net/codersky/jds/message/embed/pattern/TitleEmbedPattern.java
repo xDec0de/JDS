@@ -1,8 +1,6 @@
 package net.codersky.jds.message.embed.pattern;
 
-import net.codersky.jds.message.embed.JDSEmbedBuilder;
 import net.codersky.jsky.annotations.KeyPattern;
-import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.strings.tag.JTag;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -12,13 +10,8 @@ public class TitleEmbedPattern implements EmbedPattern {
 
 	@Override
 	public void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra) {
-		if (context.length() > MessageEmbed.TITLE_MAX_LENGTH)
-			return;
-		final JTag url = JCollections.get(extra, tag -> tag.getName().equals("url"));
-		if (url != null && JDSEmbedBuilder.isUrlOrAttachment(url.getContent()))
-			embed.setTitle(context, url.getContent());
-		else
-			embed.setTitle(context);
+		if (context.length() <= MessageEmbed.TITLE_MAX_LENGTH)
+			embed.setTitle(context, getUrl(extra));
 	}
 
 	@Override
