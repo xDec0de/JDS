@@ -14,6 +14,10 @@ public interface EmbedPattern {
 
 	void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra);
 
+	/*
+	 - Pattern info
+	 */
+
 	@NotNull
 	@KeyPattern
 	String getKey();
@@ -21,28 +25,6 @@ public interface EmbedPattern {
 	@NotNull
 	default String @NotNull [] getAliases() {
 		return NO_ARGS;
-	}
-
-	/*
-	 - Match by name or aliases
-	 */
-
-	default boolean matches(@NotNull String key) {
-		if (getKey().equals(key))
-			return true;
-		for (final String alias : getAliases())
-			if (alias.equals(key))
-				return true;
-		return false;
-	}
-
-	default boolean matches(@NotNull EmbedPattern other) {
-		if (matches(other.getKey()))
-			return true;
-		for (final String alias : other.getAliases())
-			if (matches(alias))
-				return true;
-		return false;
 	}
 
 	/*

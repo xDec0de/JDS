@@ -8,6 +8,7 @@ import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ImageEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ThumbnailEmbedPattern;
 import net.codersky.jds.message.embed.pattern.TitleEmbedPattern;
+import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
 import net.codersky.jsky.strings.tag.JTagParser;
@@ -22,7 +23,7 @@ public class JDSEmbedBuilder {
 
 	private final static ArrayList<EmbedPattern> patterns = new ArrayList<>();
 
-	static { // Keep alphabetic order for organization, please.
+	static { // NOTE: Keep alphabetic order for organization, please.
 		addPattern(new AuthorEmbedPattern());
 		addPattern(new ColorEmbedPattern());
 		addPattern(new DescriptionEmbedPattern());
@@ -38,17 +39,24 @@ public class JDSEmbedBuilder {
 
 	@Nullable
 	public static EmbedPattern getPattern(@NotNull String key) {
-		for (final EmbedPattern pattern : patterns)
-			if (pattern.matches(key))
+		if (!JStrings.hasKeyPattern(key))
+			return null;
+		for (final EmbedPattern pattern : patterns) {
+			if (pattern.getKey().equals(key))
 				return pattern;
+			if (JCollections.contains(pattern.getAliases(), alias -> alias.equals(key)))
+				return pattern;
+		}
 		return null;
 	}
 
 	public static boolean addPattern(@NotNull EmbedPattern pattern) {
 		if (!isValidPattern(pattern))
 			return false;
-		for (EmbedPattern added : patterns)
-			if (added.matches(pattern))
+		if (getPattern(pattern.getKey()) != null)
+			return false;
+		for (final String alias : pattern.getAliases())
+			if (getPattern(alias) != null)
 				return false;
 		return patterns.add(pattern);
 	}
