@@ -2,9 +2,11 @@ package net.codersky.jds.message.embed;
 
 import net.codersky.jds.message.embed.pattern.AuthorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
+import net.codersky.jds.message.embed.pattern.DescriptionEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ImageEmbedPattern;
+import net.codersky.jds.message.embed.pattern.ThumbnailEmbedPattern;
 import net.codersky.jds.message.embed.pattern.TitleEmbedPattern;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
@@ -20,14 +22,14 @@ public class JDSEmbedBuilder {
 
 	private final static ArrayList<EmbedPattern> patterns = new ArrayList<>();
 
-	static {
-		addPattern(new TitleEmbedPattern());
+	static { // Keep alphabetic order for organization, please.
+		addPattern(new AuthorEmbedPattern());
 		addPattern(new ColorEmbedPattern());
-		addPattern(EmbedPattern.of(EmbedBuilder::setDescription, "desc", "description"));
+		addPattern(new DescriptionEmbedPattern());
 		addPattern(new FooterEmbedPattern());
 		addPattern(new ImageEmbedPattern());
-		addPattern(EmbedPattern.of(EmbedBuilder::setThumbnail, "thumbnail", "thmb"));
-		addPattern(new AuthorEmbedPattern());
+		addPattern(new ThumbnailEmbedPattern());
+		addPattern(new TitleEmbedPattern());
 	}
 
 	/*
