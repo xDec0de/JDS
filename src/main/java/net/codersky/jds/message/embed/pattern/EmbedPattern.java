@@ -63,6 +63,4 @@ public interface EmbedPattern {
 	static EmbedPattern of(BiConsumer<EmbedBuilder, String> apply, @NotNull @KeyPattern String key) {
 		return of(apply, key, new String[0]);
 	}
-
-
 }

@@ -2,6 +2,7 @@ package net.codersky.jds.message.embed;
 
 import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
+import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
 import net.codersky.jsky.strings.tag.JTagParser;
@@ -20,7 +21,7 @@ public class JDSEmbedBuilder {
 		addPattern(EmbedPattern.of(EmbedBuilder::setTitle,"title"));
 		addPattern(new ColorEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setDescription, "desc", "description"));
-		addPattern(EmbedPattern.of(EmbedBuilder::setFooter, "footer"));
+		addPattern(new FooterEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setImage, "image", "img"));
 		addPattern(EmbedPattern.of(EmbedBuilder::setThumbnail, "thumbnail", "thmb"));
 		addPattern(EmbedPattern.of(EmbedBuilder::setAuthor, "author"));
@@ -77,5 +78,23 @@ public class JDSEmbedBuilder {
 				pattern.apply(builder, modifier.getContent(), modifier.getChildren());
 		}
 		return builder.build();
+	}
+
+	/*
+	 - Utilities
+	 */
+
+	public static boolean isUrlOrAttachment(@NotNull String url) {
+		final int urlLen = url.length();
+		final String http = "http://";
+		if (urlLen <= http.length())
+			return false;
+		final String https = "https://";
+		if (urlLen > https.length() && JStrings.startsWith(true, url, https))
+			return true;
+		if (JStrings.startsWith(true, url, http))
+			return true;
+		final String attachment = "attachment://";
+		return urlLen > attachment.length() && JStrings.startsWith(true, url, attachment);
 	}
 }
