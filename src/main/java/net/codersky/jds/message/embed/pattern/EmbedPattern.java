@@ -9,6 +9,8 @@ import java.util.function.BiConsumer;
 
 public interface EmbedPattern {
 
+	String[] NO_ARGS = new String[0];
+
 	void apply(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull JTag[] extra);
 
 	@NotNull
@@ -17,7 +19,7 @@ public interface EmbedPattern {
 
 	@NotNull
 	default String @NotNull [] getAliases() {
-		return new String[0];
+		return NO_ARGS;
 	}
 
 	default boolean matches(@NotNull String key) {
