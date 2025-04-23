@@ -8,6 +8,7 @@ import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ImageEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ThumbnailEmbedPattern;
 import net.codersky.jds.message.embed.pattern.TitleEmbedPattern;
+import net.codersky.jds.message.embed.pattern.UrlEmbedPattern;
 import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
@@ -31,6 +32,7 @@ public class JDSEmbedBuilder {
 		addPattern(new ImageEmbedPattern());
 		addPattern(new ThumbnailEmbedPattern());
 		addPattern(new TitleEmbedPattern());
+		addPattern(new UrlEmbedPattern());
 	}
 
 	/*
