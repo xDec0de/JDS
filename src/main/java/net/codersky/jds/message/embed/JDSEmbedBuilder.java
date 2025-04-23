@@ -3,6 +3,7 @@ package net.codersky.jds.message.embed;
 import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
+import net.codersky.jds.message.embed.pattern.ImageEmbedPattern;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
 import net.codersky.jsky.strings.tag.JTagParser;
@@ -22,7 +23,7 @@ public class JDSEmbedBuilder {
 		addPattern(new ColorEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setDescription, "desc", "description"));
 		addPattern(new FooterEmbedPattern());
-		addPattern(EmbedPattern.of(EmbedBuilder::setImage, "image", "img"));
+		addPattern(new ImageEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setThumbnail, "thumbnail", "thmb"));
 		addPattern(EmbedPattern.of(EmbedBuilder::setAuthor, "author"));
 	}
@@ -86,6 +87,8 @@ public class JDSEmbedBuilder {
 
 	public static boolean isUrlOrAttachment(@NotNull String url) {
 		final int urlLen = url.length();
+		if (urlLen > MessageEmbed.URL_MAX_LENGTH)
+			return false;
 		final String http = "http://";
 		if (urlLen <= http.length())
 			return false;

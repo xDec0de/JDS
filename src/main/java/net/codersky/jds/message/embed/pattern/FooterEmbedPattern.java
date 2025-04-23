@@ -15,18 +15,10 @@ public class FooterEmbedPattern implements EmbedPattern {
 		if (context.length() > MessageEmbed.TEXT_MAX_LENGTH)
 			return;
 		final JTag url = JCollections.get(extra, tag -> tag.getName().equals("url"));
-		if (url == null) {
+		if (url != null && JDSEmbedBuilder.isUrlOrAttachment(url.getContent()))
+			embed.setFooter(context, url.getContent());
+		else
 			embed.setFooter(context);
-		} else
-			withUrl(embed, context, url.getContent());
-	}
-
-	private void withUrl(@NotNull EmbedBuilder embed, @NotNull String context, @NotNull String url) {
-		if (url.length() > MessageEmbed.URL_MAX_LENGTH)
-			embed.setFooter(context);
-		if (!JDSEmbedBuilder.isUrlOrAttachment(url))
-			embed.setFooter(context);
-		embed.setFooter(context, url);
 	}
 
 	@Override
