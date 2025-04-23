@@ -4,6 +4,7 @@ import net.codersky.jds.message.embed.pattern.ColorEmbedPattern;
 import net.codersky.jds.message.embed.pattern.EmbedPattern;
 import net.codersky.jds.message.embed.pattern.FooterEmbedPattern;
 import net.codersky.jds.message.embed.pattern.ImageEmbedPattern;
+import net.codersky.jds.message.embed.pattern.TitleEmbedPattern;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
 import net.codersky.jsky.strings.tag.JTagParser;
@@ -19,7 +20,7 @@ public class JDSEmbedBuilder {
 	private final static ArrayList<EmbedPattern> patterns = new ArrayList<>();
 
 	static {
-		addPattern(EmbedPattern.of(EmbedBuilder::setTitle,"title"));
+		addPattern(new TitleEmbedPattern());
 		addPattern(new ColorEmbedPattern());
 		addPattern(EmbedPattern.of(EmbedBuilder::setDescription, "desc", "description"));
 		addPattern(new FooterEmbedPattern());
