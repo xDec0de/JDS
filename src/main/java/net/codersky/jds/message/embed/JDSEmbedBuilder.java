@@ -76,27 +76,163 @@ public class JDSEmbedBuilder {
 		return true;
 	}
 
-	/*
-	 - Embed building
+	/**
+	 * Checks if the provided {@code tag} is a valid embed tag. Embed
+	 * tags are {@link JTag JTags} which {@link JTag#getName() name}
+	 * is either "e" or "embed". Embed tags are considered the parent
+	 * tags that will then contain {@link EmbedPattern embed patterns}
+	 * inside of them (As {@link JTag} {@link JTag#getChildren() children}).
+	 * Here are examples of valid embed tags (In raw string format):
+	 * <ul>
+	 *     <li>{@code <embed: <title:Embed title> >}</li>
+	 *     <li>{@code <embed: Actual content is not verified >}</li>
+	 *     <li>{@code <e: <desc:Short format> >}</li>
+	 * </ul>
+	 *
+	 * @param tag The {@link JTag} to check.
+	 *
+	 * @return {@code true} if {@code tag} is an embed tag, {@code false} otherwise.
+	 *
+	 * @since JDSky 1.0.0
+	 *
+	 * @see #build(String)
+	 * @see #applyPatterns(String)
+	 * @see #applyPatterns(EmbedBuilder, JTag)
 	 */
-
-	@Nullable
-	public static MessageEmbed build(@NotNull String raw) {
-		final JTag embed = JTagParser.parseOne(raw);
-		return embed == null ? null : build(embed);
+	public static boolean isEmbedTag(@NotNull JTag tag) {
+		return tag.getName().equals("e") || tag.getName().equals("embed");
 	}
 
-	@Nullable
-	public static MessageEmbed build(@NotNull JTag tag) {
-		if (!tag.getName().equals("e") && tag.getName().equals("embed"))
-			return null;
-		final EmbedBuilder builder = new EmbedBuilder();
-		for (final JTag modifier : tag.getChildren()) {
+	/*
+	 - Apply patterns
+	 */
+
+	/**
+	 * Searches for {@link EmbedPattern embed patterns} directly on the provided
+	 * {@code patterns} array and {@link EmbedPattern#apply(EmbedBuilder, String, JTag[])
+	 * applies} them to the {@code base} {@link EmbedBuilder}.
+	 *
+	 * @param base The base {@link EmbedBuilder} to modify.
+	 * @param patterns The {@link JTag} array used to search for
+	 * {@link EmbedPattern embed patterns} to apply.
+	 *
+	 * @return {@code base} with any required modifications. {@code base}
+	 * will not be modified if no {@link EmbedPattern} is found inside the
+	 * {@code patterns} array.
+	 *
+	 * @since JDSky 1.0.0
+	 */
+	@NotNull
+	public static EmbedBuilder applyPatterns(@NotNull EmbedBuilder base, @NotNull JTag[] patterns) {
+		for (final JTag modifier : patterns) {
 			final EmbedPattern pattern = getPattern(modifier.getName());
 			if (pattern != null)
-				pattern.apply(builder, modifier.getContent(), modifier.getChildren());
+				pattern.apply(base, modifier.getContent(), modifier.getChildren());
 		}
-		return builder.build();
+		return base;
+	}
+
+	/**
+	 * Applies {@link EmbedPattern embed patterns} found inside the
+	 * provided {@code embedTag}. First, {@code embedTag} is verified,
+	 * {@link #isEmbedTag(JTag) checking if it's actually an embed tag}.
+	 * If so, then {@link #applyPatterns(EmbedBuilder, JTag[])} is used
+	 * with {@code embedTag}'s {@link JTag#getChildren() children tags}
+	 * to apply the {@link EmbedPattern embed patterns} to {@code base}.
+	 *
+	 * @param base The base {@link EmbedBuilder} to modify.
+	 * @param embedTag The embed {@link JTag} to use. {@link EmbedPattern
+	 * embed patterns} will be searched on its {@link JTag#getChildren()
+	 * children tags}, and then applied to {@code base}.
+	 *
+	 * @return {@code base} with any required modifications. {@code base}
+	 * will not be modified if {@code embedTag} isn't an embed tag (See
+	 * {@link #isEmbedTag(JTag)}) or if no {@link EmbedPattern embed patterns}
+	 * are found inside {@code embedTag}.
+	 *
+	 * @since JDSky 1.0.0
+	 *
+	 * @see #isEmbedTag(JTag)
+	 * @see #applyPatterns(EmbedBuilder, JTag[])
+	 */
+	@NotNull
+	public static EmbedBuilder applyPatterns(@NotNull EmbedBuilder base, @NotNull JTag embedTag) {
+		return isEmbedTag(embedTag) ? applyPatterns(base, embedTag.getChildren()) : base;
+	}
+
+	/**
+	 * Attempts to obtain {@link EmbedPattern embed patterns} from the provided
+	 * {@code raw} String that will then be used to modify the {@code base}
+	 * {@link EmbedBuilder}.
+	 * <p>
+	 * The {@code raw} String is assumed to contain {@link EmbedPattern patterns}
+	 * directly, not an {@link #isEmbedTag(JTag) embed tag}. So this is considered
+	 * valid input:
+	 * <ul>
+	 *     <li>{@code <title:Modified embed title>}</li>
+	 *     <li>{@code <desc:Modified embed description>}</li>
+	 * </ul>
+	 * While this isn't:
+	 * <ul>
+	 *     <li>{@code <e: <title:Modified embed title> >}</li>
+	 *     <li>{@code <embed: <desc:Modified embed description> >}</li>
+	 * </ul>
+	 *
+	 * This is because this method is meant to modify an existing {@code base}
+	 * {@link EmbedBuilder}, not to create a new one entirely. For that,
+	 * you can use either {@link #applyPatterns(String)} or {@link #build(String)}.
+	 *
+	 * @param base The base {@link EmbedBuilder} to modify.
+	 * @param raw The raw String containing {@link EmbedPattern embed patterns}.
+	 *
+	 * @return {@code base} with any required modifications. {@code base}
+	 * will not be modified if no {@link EmbedPattern embed patterns}
+	 * are found inside the {@code raw} String.
+	 */
+	@NotNull
+	public static EmbedBuilder applyPatterns(@NotNull EmbedBuilder base, @NotNull String raw) {
+		return applyPatterns(base, JTagParser.parse(raw));
+	}
+
+	/**
+	 * Creates an {@link EmbedBuilder} based of the provided {@code raw}
+	 * String, given that it contains a valid {@link #isEmbedTag(JTag) embed tag}
+	 * with valid {@link EmbedPattern embed patterns} inside of it.
+	 *
+	 * @param raw The raw embed String to use.
+	 *
+	 * @return A new {@link EmbedBuilder} based of the provided
+	 * {@code raw} String if it has valid syntax, {@code null} otherwise.
+	 */
+	@Nullable
+	public static EmbedBuilder applyPatterns(@NotNull String raw) {
+		final JTag tag = JTagParser.parseOne(raw);
+		if (tag == null || !isEmbedTag(tag))
+			return null;
+		return applyPatterns(new EmbedBuilder(), tag.getChildren());
+	}
+
+	/**
+	 * Builds a new {@link MessageEmbed} based of the provided {@code raw}
+	 * String, given that it contains a valid {@link #isEmbedTag(JTag) embed tag}
+	 * with valid {@link EmbedPattern embed patterns} inside of it.
+	 * <p>
+	 * {@link #applyPatterns(String)} is used by this method. This method
+	 * only uses it, checks if the return value is {@code null}, and if
+	 * not, {@link EmbedBuilder#build() builds it}. If {@code null},
+	 * it just returns {@code null}.
+	 *
+	 * @param raw The raw embed String to use.
+	 *
+	 * @return A new {@link MessageEmbed} based of the provided
+	 * {@code raw} String if it has valid syntax, {@code null} otherwise.
+	 *
+	 * @since JDSky 1.0.0
+	 */
+	@Nullable
+	public static MessageEmbed build(@NotNull String raw) {
+		final EmbedBuilder builder = applyPatterns(raw);
+		return builder == null ? null : builder.build();
 	}
 
 	/*
