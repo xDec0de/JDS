@@ -21,7 +21,7 @@ public abstract class JDSBot {
 	 - Bot start
 	 */
 
-	protected abstract void onStart();
+	protected void onStart() {}
 
 	public final BotStartResult start() {
 		BotStartResult res;
@@ -145,7 +145,7 @@ public abstract class JDSBot {
 	 *
 	 * @since JDSky 1.0.0
 	 */
-	protected abstract void onStop(final @NotNull String @NotNull [] args);
+	protected void onStop(final @NotNull String @NotNull [] args) {}
 
 	private void afterStop() {
 		final CLICommandManager cli = getCLICommandManager();
@@ -176,7 +176,9 @@ public abstract class JDSBot {
 	 * @since JDSky 1.0.0
 	 */
 	@Nullable
-	public abstract CLICommandManager getCLICommandManager();
+	public CLICommandManager getCLICommandManager() {
+		return null;
+	}
 
 	/**
 	 * Gets the {@link YamlFile} that provides configuration options
@@ -193,7 +195,9 @@ public abstract class JDSBot {
 	 * @since JDSky 1.0.0
 	 */
 	@Nullable
-	public abstract YamlFile getConfig();
+	public YamlFile getConfig() {
+		return null;
+	}
 
 	/**
 	 * Gets the token used for this bot. By default, this token is obtained
@@ -211,7 +215,9 @@ public abstract class JDSBot {
 	}
 
 	@Nullable
-	public abstract JDSMessagesFile getMessages();
+	public JDSMessagesFile getMessages() {
+		return null;
+	}
 
 	/*
 	 - Command registration
