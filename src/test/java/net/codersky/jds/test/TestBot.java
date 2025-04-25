@@ -1,6 +1,6 @@
 package net.codersky.jds.test;
 
-import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.JDSBot;
 import net.codersky.jds.message.JDSMessagesFile;
 import net.codersky.jsky.cli.CLICommandManager;
 import net.codersky.jsky.yaml.YamlFile;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class TestBot extends JDSkyBot {
+public class TestBot extends JDSBot {
 
 	private final CLICommandManager cli = new CLICommandManager();
 	private final YamlFile cfg;

@@ -1,6 +1,6 @@
 package net.codersky.jds.cmd;
 
-import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.JDSBot;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter implements JDSICommand {
+public abstract class JDSCommand<B extends JDSBot> extends ListenerAdapter implements JDSICommand {
 
 	private final B bot;
 	private final SlashCommandData data;
@@ -52,7 +52,7 @@ public abstract class JDSCommand<B extends JDSkyBot> extends ListenerAdapter imp
 	 * You can use the return value to {@link JDSCommandInteraction#reply(String) reply}
 	 * to the {@code interaction} and {@code return} in one line.
 	 *
-	 * @since JDSkyBot 1.0.0
+	 * @since JDSBot 1.0.0
 	 *
 	 * @see JDSCommandInteraction#reply(String)
 	 * @see JDSCommandInteraction#replyCustom(String)

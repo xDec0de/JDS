@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public abstract class JDSkyBot {
+public abstract class JDSBot {
 
 	private JDA jda;
 
@@ -95,7 +95,7 @@ public abstract class JDSkyBot {
 	 */
 
 	/**
-	 * Stops this {@link JDSkyBot}. This is usually done by the built-in
+	 * Stops this {@link JDSBot}. This is usually done by the built-in
 	 * stop CLI command, but you can also stop the bot manually with this
 	 * method.
 	 *
@@ -118,7 +118,7 @@ public abstract class JDSkyBot {
 	}
 
 	/**
-	 * Stops this {@link JDSkyBot} without command arguments. Stopping
+	 * Stops this {@link JDSBot} without command arguments. Stopping
 	 * the bot is usually done by the built-in stop CLI command, but
 	 * you can also stop the bot manually with this method.
 	 *
@@ -164,13 +164,13 @@ public abstract class JDSkyBot {
 	}
 
 	/**
-	 * Gets the {@link CLICommandManager} of this {@link JDSkyBot}.
+	 * Gets the {@link CLICommandManager} of this {@link JDSBot}.
 	 * This can be {@code null}, in which case, JDSky won't register
 	 * the built-in stop CLI command. We highly recommend to use
 	 * a {@link CLICommandManager}, as it provides control over your
 	 * bot from the command line, but do as you please.
 	 *
-	 * @return The {@link CLICommandManager} of this {@link JDSkyBot},
+	 * @return The {@link CLICommandManager} of this {@link JDSBot},
 	 * can be {@code null} if the bot doesn't support CLI commands.
 	 *
 	 * @since JDSky 1.0.0
@@ -180,14 +180,14 @@ public abstract class JDSkyBot {
 
 	/**
 	 * Gets the {@link YamlFile} that provides configuration options
-	 * for this {@link JDSkyBot}. This is optional, and may be {@code null}.
+	 * for this {@link JDSBot}. This is optional, and may be {@code null}.
 	 * But if you opt to not have a config file on your bot, then you must
 	 * override the {@link #getToken()} method with a way to get your bot
 	 * token. If you do provide a {@link YamlFile} instance, then JDSky sets
 	 * it up for you automatically. By default, the token is expected to
 	 * be located at the "token" path of your config.
 	 *
-	 * @return The {@link YamlFile config} file of this {@link JDSkyBot}.
+	 * @return The {@link YamlFile config} file of this {@link JDSBot}.
 	 * May be {@code null} if the bot doesn't have a config file.
 	 *
 	 * @since JDSky 1.0.0
@@ -202,7 +202,7 @@ public abstract class JDSkyBot {
 	 * You can of course override this method if you want to implement your
 	 * own logic to get your bot token.
 	 *
-	 * @return The token of this {@link JDSkyBot}.
+	 * @return The token of this {@link JDSBot}.
 	 */
 	@NotNull
 	protected String getToken() {
@@ -218,7 +218,7 @@ public abstract class JDSkyBot {
 	 */
 
 	@NotNull
-	public JDSkyBot addCommands(@NotNull Guild guild, @NotNull JDSICommand @NotNull ... commands) {
+	public JDSBot addCommands(@NotNull Guild guild, @NotNull JDSICommand @NotNull ... commands) {
 		final SlashCommandData[] data = new SlashCommandData[commands.length];
 		for (int i = 0; i < commands.length; i++) {
 			data[i] = commands[i].getSlashCommandData();

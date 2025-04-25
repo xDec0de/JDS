@@ -1,6 +1,6 @@
 package net.codersky.jds.cmd;
 
-import net.codersky.jds.JDSkyBot;
+import net.codersky.jds.JDSBot;
 import net.codersky.jds.message.JDSMessage;
 import net.codersky.jsky.strings.Replacer;
 import net.dv8tion.jda.api.JDA;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class JDSCommandInteraction<B extends JDSkyBot> {
+public class JDSCommandInteraction<B extends JDSBot> {
 
 	private final B bot;
 	private final SlashCommandInteractionEvent original;
