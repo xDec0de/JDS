@@ -52,7 +52,7 @@ public abstract class JDSCommand<B extends JDSBot> extends ListenerAdapter imple
 	 * You can use the return value to {@link JDSCommandInteraction#reply(String) reply}
 	 * to the {@code interaction} and {@code return} in one line.
 	 *
-	 * @since JDSBot 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see JDSCommandInteraction#reply(String)
 	 * @see JDSCommandInteraction#replyCustom(String)

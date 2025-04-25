@@ -13,7 +13,7 @@ import java.util.function.Function;
 /**
  * {@link YamlFile} extension to provide customizable {@link JDSMessage messages}.
  *
- * @since JDSBot 1.0.0
+ * @since JDS 1.0.0
  *
  * @author xDec0de_
  */

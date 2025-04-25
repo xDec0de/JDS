@@ -83,7 +83,7 @@ public abstract class JDSBot {
 	 * @return A {@link JDABuilder} made with the provided bot
 	 * {@code token}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	protected JDABuilder getJDABuilder(@NotNull String token) {
@@ -104,7 +104,7 @@ public abstract class JDSBot {
 	 * array can be empty. This just emulates arguments being passed to
 	 * the built-in stop CLI command.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #stop()
 	 * @see #onStop(String[])
@@ -122,7 +122,7 @@ public abstract class JDSBot {
 	 * the bot is usually done by the built-in stop CLI command, but
 	 * you can also stop the bot manually with this method.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #stop(String[])
 	 * @see #onStop(String[])
@@ -143,7 +143,7 @@ public abstract class JDSBot {
 	 *
 	 * @param args The arguments provided on the stop command, may be empty.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	protected void onStop(final @NotNull String @NotNull [] args) {}
 
@@ -173,7 +173,7 @@ public abstract class JDSBot {
 	 * @return The {@link CLICommandManager} of this {@link JDSBot},
 	 * can be {@code null} if the bot doesn't support CLI commands.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@Nullable
 	public CLICommandManager getCLICommandManager() {
@@ -192,7 +192,7 @@ public abstract class JDSBot {
 	 * @return The {@link YamlFile config} file of this {@link JDSBot}.
 	 * May be {@code null} if the bot doesn't have a config file.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@Nullable
 	public YamlFile getConfig() {

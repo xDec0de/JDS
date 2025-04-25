@@ -93,7 +93,7 @@ public class JDSEmbedBuilder {
 	 *
 	 * @return {@code true} if {@code tag} is an embed tag, {@code false} otherwise.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #build(String)
 	 * @see #applyPatterns(String)
@@ -120,7 +120,7 @@ public class JDSEmbedBuilder {
 	 * will not be modified if no {@link EmbedPattern} is found inside the
 	 * {@code patterns} array.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	public static EmbedBuilder applyPatterns(@NotNull EmbedBuilder base, @NotNull JTag[] patterns) {
@@ -150,7 +150,7 @@ public class JDSEmbedBuilder {
 	 * {@link #isEmbedTag(JTag)}) or if no {@link EmbedPattern embed patterns}
 	 * are found inside {@code embedTag}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #isEmbedTag(JTag)
 	 * @see #applyPatterns(EmbedBuilder, JTag[])
@@ -227,7 +227,7 @@ public class JDSEmbedBuilder {
 	 * @return A new {@link MessageEmbed} based of the provided
 	 * {@code raw} String if it has valid syntax, {@code null} otherwise.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@Nullable
 	public static MessageEmbed build(@NotNull String raw) {

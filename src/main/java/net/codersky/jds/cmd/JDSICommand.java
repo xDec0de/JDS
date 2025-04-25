@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author xDec0de_
  *
- * @since JDSky 1.0.0
+ * @since JDS 1.0.0
  */
 public interface JDSICommand {
 
@@ -22,7 +22,7 @@ public interface JDSICommand {
 	 * @return The {@link SlashCommandData} being used internally
 	 * by this {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	SlashCommandData getSlashCommandData();
@@ -38,7 +38,7 @@ public interface JDSICommand {
 	 *
 	 * @return The <b>name</b> {@link LocalizationMap} of this {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	default LocalizationMap getNameLocalizations() {
@@ -55,7 +55,7 @@ public interface JDSICommand {
 	 *
 	 * @return This {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	default JDSICommand setName(@NotNull String name, @NotNull DiscordLocale @NotNull ... locales) {
@@ -75,7 +75,7 @@ public interface JDSICommand {
 	 *
 	 * @return This {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	default JDSICommand setName(@NotNull String name) {
 		return setName(name, DiscordLocale.values());
@@ -92,7 +92,7 @@ public interface JDSICommand {
 	 *
 	 * @return The <b>description</b> {@link LocalizationMap} of this {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	default LocalizationMap getDescLocalizations() {
@@ -109,7 +109,7 @@ public interface JDSICommand {
 	 *
 	 * @return This {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	@NotNull
 	default JDSICommand setDesc(@NotNull String desc, @NotNull DiscordLocale @NotNull ... locales) {
@@ -129,7 +129,7 @@ public interface JDSICommand {
 	 *
 	 * @return This {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 */
 	default JDSICommand setDesc(@NotNull String desc) {
 		return setDesc(desc, DiscordLocale.values());
@@ -146,7 +146,7 @@ public interface JDSICommand {
 	 * @return The NSFW status of this {@link JDSICommand}. {@code true} if enabled
 	 * {@code false} otherwise.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #setNSFW(boolean)
 	 * @see <a href="https://support.discord.com/hc/en-us/articles/10123937946007">
@@ -164,7 +164,7 @@ public interface JDSICommand {
 	 *
 	 * @return This {@link JDSICommand}.
 	 *
-	 * @since JDSky 1.0.0
+	 * @since JDS 1.0.0
 	 *
 	 * @see #isNSFW()
 	 * @see <a href="https://support.discord.com/hc/en-us/articles/10123937946007">

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author xDec0de_
  *
- * @since JDSky 1.0.0
+ * @since JDS 1.0.0
  */
 public class JDSBaseCommand implements JDSICommand {
 
