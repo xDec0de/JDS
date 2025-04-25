@@ -29,24 +29,24 @@ public class JDSMessagesFile extends YamlFile {
 	}
 
 	@NotNull
-	private JDSMessage getMSBMessage(@NotNull String path, @NotNull Function<String, JDSMessage> getter) {
+	private JDSMessage getJDSMessage(@NotNull String path, @NotNull Function<String, JDSMessage> getter) {
 		final JDSMessage msg = getter.apply(path);
 		return msg == null ? getDefaultMessage(path) : msg;
 	}
 
 	@NotNull
-	public JDSMessage getMSBMessage(@NotNull String path) {
-		return getMSBMessage(path, JDSMessage::new);
+	public JDSMessage getJDSMessage(@NotNull String path) {
+		return getJDSMessage(path, JDSMessage::new);
 	}
 
 	@NotNull
-	public JDSMessage getMSBMessage(@NotNull String path, @NotNull Replacer replacer) {
-		return getMSBMessage(path, raw -> new JDSMessage(replacer.replaceAt(raw)));
+	public JDSMessage getJDSMessage(@NotNull String path, @NotNull Replacer replacer) {
+		return getJDSMessage(path, raw -> new JDSMessage(replacer.replaceAt(raw)));
 	}
 
 	@NotNull
-	public JDSMessage getMSBMessage(@NotNull String path, @NotNull Object... replacements) {
-		return getMSBMessage(path, new Replacer(replacements));
+	public JDSMessage getJDSMessage(@NotNull String path, @NotNull Object... replacements) {
+		return getJDSMessage(path, new Replacer(replacements));
 	}
 
 	/*
@@ -54,11 +54,11 @@ public class JDSMessagesFile extends YamlFile {
 	 */
 
 	public boolean reply(@NotNull IReplyCallback toReply, @NotNull String path) {
-		return getMSBMessage(path).reply(toReply);
+		return getJDSMessage(path).reply(toReply);
 	}
 
 	public boolean reply(@NotNull IReplyCallback toReply, @NotNull String path, @NotNull Replacer replacer) {
-		return getMSBMessage(path, replacer).reply(toReply);
+		return getJDSMessage(path, replacer).reply(toReply);
 	}
 
 	public boolean reply(@NotNull IReplyCallback toReply, @NotNull String path, @NotNull Object... replacements) {
