@@ -15,12 +15,12 @@ public class TestBot extends JDSBot {
 
 	private final CLICommandManager cli = new CLICommandManager();
 	private final YamlFile cfg;
-	private final JDSMessagesFile msg;
+	private final JDSMessagesFile<YamlFile> msg;
 	private final String token;
 
 	public TestBot(@NotNull File dataFolder, @Nullable String altToken) throws IOException {
 		this.cfg = new YamlFile(dataFolder, "config.yml");
-		this.msg = new JDSMessagesFile(dataFolder, "messages.yml");
+		this.msg = new JDSMessagesFile<>(new YamlFile(dataFolder, "messages.yml"));
 		if (altToken != null) {
 			this.token = altToken;
 			return;
@@ -60,7 +60,7 @@ public class TestBot extends JDSBot {
 	}
 
 	@Override
-	public @Nullable JDSMessagesFile getMessages() {
+	public @Nullable JDSMessagesFile<YamlFile> getMessages() {
 		return msg;
 	}
 }

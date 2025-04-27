@@ -1,26 +1,33 @@
 package net.codersky.jds.message;
 
+import net.codersky.jsky.storage.DataProvider;
 import net.codersky.jsky.strings.Replacer;
-import net.codersky.jsky.yaml.YamlFile;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.callbacks.IReplyCallback;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * {@link YamlFile} extension to provide customizable {@link JDSMessage messages}.
+ * Class capable of storing any {@link DataProvider} to fetch raw
+ * message data that can be then converted to {@link JDSMessage}s.
  *
  * @since JDS 1.0.0
  *
  * @author xDec0de_
  */
-public class JDSMessagesFile extends YamlFile {
+public class JDSMessagesFile<P extends DataProvider> {
 
-	public JDSMessagesFile(@Nullable File diskPath, @NotNull String resourcePath) {
-		super(diskPath, resourcePath);
+	private final P provider;
+
+	public JDSMessagesFile(@NotNull P provider) {
+		this.provider = Objects.requireNonNull(provider);
+	}
+
+	@NotNull
+	public P getProvider() {
+		return provider;
 	}
 
 	@NotNull
@@ -30,8 +37,8 @@ public class JDSMessagesFile extends YamlFile {
 
 	@NotNull
 	private JDSMessage getJDSMessage(@NotNull String path, @NotNull Function<String, JDSMessage> getter) {
-		final JDSMessage msg = getter.apply(path);
-		return msg == null ? getDefaultMessage(path) : msg;
+		final String raw = provider.getString(path);
+		return raw == null ? getDefaultMessage(path) : getter.apply(raw);
 	}
 
 	@NotNull
