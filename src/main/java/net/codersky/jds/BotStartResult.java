@@ -4,8 +4,6 @@ public enum BotStartResult {
 
 	/** Bot started successfully. */
 	OK,
-	/** Critical error: config.yml failed to set up. */
-	CONFIG_SETUP_FAIL,
 	/** Critical error: No bot token on config.yml. */
 	NO_BOT_TOKEN,
 	/** Critical error: JDA failed to start. */

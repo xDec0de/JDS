@@ -1,21 +1,29 @@
 package net.codersky.jds;
 
 import net.codersky.jds.cmd.JDSICommand;
-import net.codersky.jds.message.JDSMessagesFile;
 import net.codersky.jsky.cli.CLICommandManager;
-import net.codersky.jsky.yaml.YamlFile;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.Objects;
 
-public abstract class JDSBot {
+public class JDSBot {
 
 	private JDA jda;
+	private final CLICommandManager cli;
+
+	public JDSBot(@Nullable CLICommandManager cli) {
+		this.cli = cli;
+	}
+
+	public JDSBot() {
+		this(null);
+	}
 
 	/*
 	 - Bot start
@@ -23,71 +31,36 @@ public abstract class JDSBot {
 
 	protected void onStart() {}
 
-	public final BotStartResult start() {
-		BotStartResult res;
+	@NotNull
+	public final BotStartResult start(@NotNull JDABuilder builder) {
 		setupCLI();
-		if (!(res = setupConfig()).isOk())
-			return res;
-		if (!(res = setupJDA()).isOk())
-			return res;
-		onStart();
-		return res;
-	}
-
-	private void setupCLI() {
-		final CLICommandManager manager = getCLICommandManager();
-		if (manager == null)
-			return;
-		manager.registerConsumer("stop", args -> {
-			manager.stop();
-			stop(args);
-			afterStop();
-		});
-		manager.start();
-	}
-
-	private BotStartResult setupConfig() {
-		final YamlFile cfg = getConfig();
-		if (cfg == null)
-			return BotStartResult.OK;
-		return cfg.setup(err -> {
-			System.err.println("Failed to setup config file - " + err.getMessage() + ":");
-			err.printStackTrace(System.err);
-		}) ? BotStartResult.OK : BotStartResult.CONFIG_SETUP_FAIL;
-	}
-
-	private BotStartResult setupJDA() {
-		final String token = getToken();
-		if (token.isEmpty())
-			return BotStartResult.NO_BOT_TOKEN;
-		jda = getJDABuilder(token).build();
+		this.jda = builder.build();
 		try {
-			jda.awaitReady();
+			this.jda.awaitReady();
 		} catch (InterruptedException e) {
 			System.err.println("Failed JDA#awaitReady, reason: " + e.getMessage());
 			return BotStartResult.JDA_SETUP_FAIL;
 		}
+		onStart();
 		return BotStartResult.OK;
 	}
 
-	/**
-	 * Gets the {@link JDABuilder} used to build a {@link JDA}
-	 * instance when this bot is {@link #start() started}.
-	 * By default, {@link JDABuilder#createDefault(String)} is
-	 * used, but you can override this method to use your own.
-	 *
-	 * @param token The token of the bot, obtained via
-	 * {@link #getToken()}. You don't need to verify the token,
-	 * JDSky will take care of that for you.
-	 *
-	 * @return A {@link JDABuilder} made with the provided bot
-	 * {@code token}.
-	 *
-	 * @since JDS 1.0.0
-	 */
 	@NotNull
-	protected JDABuilder getJDABuilder(@NotNull String token) {
-		return JDABuilder.createDefault(token);
+	public final BotStartResult start(@NotNull String token) {
+		if (token.isBlank())
+			return BotStartResult.NO_BOT_TOKEN;
+		return start(JDABuilder.createDefault(token));
+	}
+
+	private void setupCLI() {
+		if (cli == null)
+			return;
+		cli.registerConsumer("stop", args -> {
+			stop(args);
+			afterStop();
+			cli.stop();
+		});
+		cli.start();
 	}
 
 	/*
@@ -134,7 +107,7 @@ public abstract class JDSBot {
 	/**
 	 * This method is automatically called whenever the bot is signaled
 	 * to {@link #stop(String[]) stop}. Here, you can add any task that
-	 * is needed before the bot actually shuts down. JSky will do the
+	 * is needed before the bot actually shuts down. JDS will do the
 	 * following for you <b>after</b> this method is called:
 	 * <ul>
 	 *     <li>Stop the {@link #getCLICommandManager() CLICommandManager} (If any)</li>
@@ -148,7 +121,6 @@ public abstract class JDSBot {
 	protected void onStop(final @NotNull String @NotNull [] args) {}
 
 	private void afterStop() {
-		final CLICommandManager cli = getCLICommandManager();
 		if (cli != null)
 			cli.stop();
 		jda.shutdown();
@@ -165,7 +137,7 @@ public abstract class JDSBot {
 
 	/**
 	 * Gets the {@link CLICommandManager} of this {@link JDSBot}.
-	 * This can be {@code null}, in which case, JDSky won't register
+	 * This can be {@code null}, in which case, JDS won't register
 	 * the built-in stop CLI command. We highly recommend to use
 	 * a {@link CLICommandManager}, as it provides control over your
 	 * bot from the command line, but do as you please.
@@ -175,48 +147,9 @@ public abstract class JDSBot {
 	 *
 	 * @since JDS 1.0.0
 	 */
-	@Nullable
+	@UnknownNullability
 	public CLICommandManager getCLICommandManager() {
-		return null;
-	}
-
-	/**
-	 * Gets the {@link YamlFile} that provides configuration options
-	 * for this {@link JDSBot}. This is optional, and may be {@code null}.
-	 * But if you opt to not have a config file on your bot, then you must
-	 * override the {@link #getToken()} method with a way to get your bot
-	 * token. If you do provide a {@link YamlFile} instance, then JDSky sets
-	 * it up for you automatically. By default, the token is expected to
-	 * be located at the "token" path of your config.
-	 *
-	 * @return The {@link YamlFile config} file of this {@link JDSBot}.
-	 * May be {@code null} if the bot doesn't have a config file.
-	 *
-	 * @since JDS 1.0.0
-	 */
-	@Nullable
-	public YamlFile getConfig() {
-		return null;
-	}
-
-	/**
-	 * Gets the token used for this bot. By default, this token is obtained
-	 * from {@link #getConfig()}, at the "token" path of it. If
-	 * {@link #getConfig()} is {@code null}. Then an empty string is returned.
-	 * You can of course override this method if you want to implement your
-	 * own logic to get your bot token.
-	 *
-	 * @return The token of this {@link JDSBot}.
-	 */
-	@NotNull
-	protected String getToken() {
-		final YamlFile cfg = getConfig();
-		return cfg == null ? "" : cfg.getString("token", "");
-	}
-
-	@Nullable
-	public JDSMessagesFile getMessages() {
-		return null;
+		return cli;
 	}
 
 	/*

@@ -28,7 +28,7 @@ public class StartBotTest {
 	}
 
 	@Test
-	public void testBotStart() throws IOException {
+	public void testBotStart() {
 		Assertions.assertEquals(new TestBot(dataFolder, "").start(), BotStartResult.NO_BOT_TOKEN);
 		Assertions.assertEquals(bot.start(), BotStartResult.OK);
 	}
@@ -46,7 +46,7 @@ public class StartBotTest {
 		final Guild guild = bot.getJDA().getGuildById(this.guild);
 		if (guild == null)
 			return;
-		bot.addCommands(guild, new StopCmd(bot), new EmbedTestCmd(bot));
+		bot.addCommands(guild, new StopCmd(bot), new EmbedTestCmd());
 		while (bot.getCLICommandManager().isRunning())
 			continue;
 		Assertions.assertTrue(true);

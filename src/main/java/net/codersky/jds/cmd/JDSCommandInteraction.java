@@ -1,6 +1,5 @@
 package net.codersky.jds.cmd;
 
-import net.codersky.jds.JDSBot;
 import net.codersky.jds.message.JDSMessage;
 import net.codersky.jsky.strings.Replacer;
 import net.dv8tion.jda.api.JDA;
@@ -17,24 +16,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class JDSCommandInteraction<B extends JDSBot> {
+public class JDSCommandInteraction {
 
-	private final B bot;
 	private final SlashCommandInteractionEvent original;
 
-	public JDSCommandInteraction(@NotNull B bot, @NotNull SlashCommandInteractionEvent event) {
-		this.bot = Objects.requireNonNull(bot);
+	public JDSCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
 		this.original = Objects.requireNonNull(event);
 	}
 
 	/*
 	 - Utility getters
 	 */
-
-	@NotNull
-	public B getBot() {
-		return bot;
-	}
 
 	@NotNull
 	public JDA getJDA() {
@@ -65,31 +57,40 @@ public class JDSCommandInteraction<B extends JDSBot> {
 	}
 
 	/*
-	 - Reply (Custom)
+	 - Reply - Raw
 	 */
 
-	public boolean replyCustom(String message) {
-		return new JDSMessage(message).reply(original);
+	public boolean replyRaw(@NotNull String raw) {
+		original.reply(raw).queue();
+		return true;
 	}
 
-	public boolean replyCustom(JDSMessage message) {
-		return message.reply(original);
+	public boolean replyRaw(@NotNull String raw, @NotNull Replacer replacer) {
+		return replyRaw(replacer.replaceAt(raw));
+	}
+
+	public boolean replyRaw(@NotNull String raw, Object... replacements) {
+		return replyRaw(raw, new Replacer(replacements));
 	}
 
 	/*
-	 - Reply (From messages file)
+	 - Reply - JDSMessage
 	 */
 
-	public boolean reply(@NotNull String path) {
-		return bot.getMessages().reply(getUser(), original, path);
+	public boolean reply(@NotNull JDSMessage message) {
+		return message.reply(original);
 	}
 
-	public boolean reply(@NotNull String path, @NotNull Replacer replacer) {
-		return bot.getMessages().reply(getUser(), original, path, replacer);
+	public boolean reply(@NotNull String jdsMessage) {
+		return reply(new JDSMessage(jdsMessage));
 	}
 
-	public boolean reply(@NotNull String path, @NotNull Object... replacements) {
-		return bot.getMessages().reply(getUser(), original, path, replacements);
+	public boolean reply(@NotNull String jdsMessage, @NotNull Replacer replacer) {
+		return reply(new JDSMessage(replacer.replaceAt(jdsMessage)));
+	}
+
+	public boolean reply(@NotNull String jdsMessage, Object... replacements) {
+		return reply(jdsMessage, new Replacer(replacements));
 	}
 
 	/*

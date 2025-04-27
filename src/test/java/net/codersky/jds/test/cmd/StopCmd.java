@@ -5,18 +5,21 @@ import net.codersky.jds.cmd.JDSCommand;
 import net.codersky.jds.cmd.JDSCommandInteraction;
 import org.jetbrains.annotations.NotNull;
 
-public class StopCmd extends JDSCommand<JDSBot> {
+public class StopCmd extends JDSCommand {
+
+	private final JDSBot bot;
 
 	public StopCmd(@NotNull JDSBot bot) {
-		super(bot, "stop", "Stops the bot!");
+		super("stop", "Stops the bot!");
+		this.bot = bot;
 	}
 
 	@Override
-	public boolean onSlashCommand(JDSCommandInteraction<JDSBot> interaction) {
+	public boolean onSlashCommand(JDSCommandInteraction interaction) {
 		interaction.deferReply(true);
-		interaction.replyCustom("Stopping!");
+		interaction.replyRaw("Stopping!");
 		System.out.println("Stopping bot now.");
-		getBot().stop();
+		bot.stop();
 		return true;
 	}
 }

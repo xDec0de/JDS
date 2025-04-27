@@ -38,7 +38,7 @@ public class JDSBaseCommand implements JDSICommand {
 	 *
 	 * @return This {@link JDSCommand}, the base command.
 	 */
-	public JDSBaseCommand addSubCommand(@NotNull JDSCommand<?>... subcommands) {
+	public JDSBaseCommand addSubCommand(@NotNull JDSCommand... subcommands) {
 		final SubcommandData[] data = new SubcommandData[subcommands.length];
 		for (int i = 0; i < subcommands.length; i++)
 			data[i] = SubcommandData.fromData(subcommands[i].getSlashCommandData().toData());

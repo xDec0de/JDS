@@ -1,66 +1,34 @@
 package net.codersky.jds.test;
 
+import net.codersky.jds.BotStartResult;
 import net.codersky.jds.JDSBot;
-import net.codersky.jds.message.JDSMessagesFile;
+import net.codersky.jds.token.FileTokenProvider;
 import net.codersky.jsky.cli.CLICommandManager;
-import net.codersky.jsky.yaml.YamlFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 public class TestBot extends JDSBot {
 
-	private final CLICommandManager cli = new CLICommandManager();
-	private final YamlFile cfg;
-	private final JDSMessagesFile<YamlFile> msg;
 	private final String token;
 
-	public TestBot(@NotNull File dataFolder, @Nullable String altToken) throws IOException {
-		this.cfg = new YamlFile(dataFolder, "config.yml");
-		this.msg = new JDSMessagesFile<>(new YamlFile(dataFolder, "messages.yml"));
-		if (altToken != null) {
+	public TestBot(@NotNull File dataFolder, @Nullable String altToken) {
+		super(new CLICommandManager());
+		if (altToken != null)
 			this.token = altToken;
-			return;
-		}
-		final File tokenFile = new File(dataFolder, "/token");
-		if (!dataFolder.exists())
-			dataFolder.mkdirs();
-		if (!tokenFile.exists())
-			tokenFile.createNewFile();
-		token = Files.readString(tokenFile.toPath());
+		else
+			this.token = new FileTokenProvider(new File(dataFolder, "/token")).getToken();
 	}
 
-	@Override
-	protected void onStart() {
-
-	}
-
-	@Override
-	protected void onStop(@NotNull String @NotNull [] args) {
-
-	}
-
-	@Override
-	public @Nullable CLICommandManager getCLICommandManager() {
-		return cli;
+	@NotNull
+	public BotStartResult start() {
+		return super.start(token);
 	}
 
 	@NotNull
 	@Override
-	protected String getToken() {
-		return token;
-	}
-
-	@Override
-	public @Nullable YamlFile getConfig() {
-		return cfg;
-	}
-
-	@Override
-	public @Nullable JDSMessagesFile<YamlFile> getMessages() {
-		return msg;
+	public CLICommandManager getCLICommandManager() {
+		return super.getCLICommandManager();
 	}
 }
