@@ -14,6 +14,7 @@ import net.codersky.jds.message.embed.pattern.UrlEmbedPattern;
 import net.codersky.jsky.collections.JCollections;
 import net.codersky.jsky.strings.JStrings;
 import net.codersky.jsky.strings.tag.JTag;
+import net.codersky.jsky.strings.tag.JTagParseAllResult;
 import net.codersky.jsky.strings.tag.JTagParser;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -191,7 +192,11 @@ public class JDSEmbedBuilder {
 	 */
 	@NotNull
 	public static EmbedBuilder applyPatterns(@NotNull EmbedBuilder base, @NotNull String raw) {
-		return applyPatterns(base, JTagParser.parse(raw));
+		EmbedBuilder builder = base;
+		final JTagParseAllResult res = JTagParser.parseAll(raw);
+		for (final JTag tag : res.getTags())
+			builder = applyPatterns(builder, tag);
+		return builder;
 	}
 
 	/**
@@ -206,7 +211,7 @@ public class JDSEmbedBuilder {
 	 */
 	@Nullable
 	public static EmbedBuilder applyPatterns(@NotNull String raw) {
-		final JTag tag = JTagParser.parseOne(raw);
+		final JTag tag = JTagParser.parse(raw).getTag();
 		if (tag == null || !isEmbedTag(tag))
 			return null;
 		return applyPatterns(new EmbedBuilder(), tag.getChildren());
