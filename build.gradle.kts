@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
 
-	val jda = "5.4.0"
+	val jda = "6.0.0"
 
 	compileOnly("org.jetbrains:annotations:26.0.2")
 	compileOnly("net.codersky.jsky:base:1.0.0-SNAPSHOT")
